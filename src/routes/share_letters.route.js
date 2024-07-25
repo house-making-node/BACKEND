@@ -1,6 +1,6 @@
 import express from "express";
 import asyncHandler from 'express-async-handler';
-import {addSubscriptionInfo, addSharedLetter} from "../controllers/share_letters.controller.js";
+import {addSubscriptionInfo} from "../controllers/share_letters.controller.js";
 
 export const sharelettersRouter = express.Router();
 
