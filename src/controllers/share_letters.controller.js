@@ -1,7 +1,7 @@
 import { response } from '../../config/response.js';
 import { status } from '../../config/response.status.js';
 import { addInfo } from '../services/share_subscriptions.service.js';
-import { addLetter } from '../services/share_letters.service.js';
+//import { addLetter } from '../services/share_letters.service.js';
 
 export const addSubscriptionInfo = async (req,res,next) => {
     try{
