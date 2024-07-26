@@ -1,0 +1,47 @@
+import { pool } from "../../config/db.connect.js";
+import { BaseError } from "../../config/error.js";
+import { status } from "../../config/response.status.js";
+import { insertSharedLetterSql, getSharedLetterSql } from './share_letters.sql.js';
+
+export const addLetterData = async (body) =>{
+    try{
+        console.log("share_letters.dao.js [data] : ",body);
+        const conn = await pool.getConnection();
+        const [result] = await pool.query(insertSharedLetterSql,[
+            body.user_id,
+            body.nickname,
+            body.age,
+            body.experience_detail,
+            body.experience_comment,
+            body.s3_key,
+            body.title
+        ]);
+        conn.release();
+        if(result.length == 0){
+            return -1;
+        }
+
+        return result.insertId;
+    }
+    catch(err){
+        console.log("share_letters.dao.js addLetterData [err] : ",err);
+        throw new BaseError(status.INTERNAL_SERVER_ERROR);
+    }
+}
+
+export const getLetterData = async (id) => {
+    try{
+        const conn = await pool.getConnection();
+        const [result] = await conn.query(getSharedLetterSql, [id]);
+        conn.release();
+
+        if(result.length === 0) {
+            return -1;
+        }
+
+        return result;
+    }catch (err) {
+        console.log("share_letters.dao.js getLetterData [err] : ", err);
+        throw new BaseError(status.INTERNAL_SERVER_ERROR);
+    }
+}
