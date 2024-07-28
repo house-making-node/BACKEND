@@ -12,7 +12,7 @@ app.get("/", function (req, res) {
 
 // router setting
 app.use("/temp", tempRouter);
-app.use("faq", faqRouter);
+app.use("/faq", faqRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
