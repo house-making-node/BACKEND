@@ -3,6 +3,7 @@
 import Faq from "../models/faq.model.js";
 
 // 사용자의 질문 목록을 가져오는 기능
+// curl -X GET "http://localhost:3000/faq/inquiry"
 export const inquiry = async (req, res) => {
   try {
     const questions = await Faq.getAllQuestions();
@@ -19,6 +20,7 @@ export const inquiry = async (req, res) => {
 };
 
 // 특정 질문에 대한 답변을 가져오는 기능
+//curl -X GET "http://localhost:3000/faq/response?id=1"
 export const inquiryResponse = async (req, res) => {
   const { id } = req.query;
 
