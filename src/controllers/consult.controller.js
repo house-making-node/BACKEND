@@ -1,7 +1,7 @@
 // consult.controller.js
 import { response } from "../../config/response.js";
 import { status } from "../../config/response.status.js";
-import { addHouseSize, addRoomNumber } from "../services/consult.service.js";
+import { addHouseSize, addMood, addRoomNumber } from "../services/consult.service.js";
 
 export const houseSizeAdd = async (req, res, next) => {
     try {
@@ -19,6 +19,17 @@ export const roomNumberAdd= async (req, res, next) => {
         const result = await addRoomNumber(req.body);
         res.send(response(status.SUCCESS, result));
     } catch (error) {
+        next(error);
+    }
+}
+
+export const moodAdd= async (req, res, next) => {
+    try{
+        console.log("body", req.body);
+        const result = await addMood(req.body);
+        console.log(result);
+        res.send(response(status.SUCCESS, result));
+    }catch(error){
         next(error);
     }
 }

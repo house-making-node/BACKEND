@@ -1,7 +1,7 @@
 import { pool } from "../../config/db.connect.js";
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
-import { getConsultReqWithIdQ, getUserWithIdQ, setHouseSizeQ, setRoomNumberQ} from "./consult.sql.js";
+import { getConsultReqWithIdQ, getUserWithIdQ, setHouseSizeQ, setMoodQ, setRoomNumberQ} from "./consult.sql.js";
 
 export const getConsultReq=async(id)=>{
     try{
@@ -35,6 +35,18 @@ export const setRoomNumber=async(body)=>{
     try{
         const conn=await pool.getConnection();
         await pool.query(setRoomNumberQ,[body.room_number,body.status,body.consulting_id]);
+        conn.release();
+        return body.consulting_id;
+    }catch(err){
+        console.log(err);
+        throw new BaseError(status.INTERNAL_SERVER_ERROR);
+    }
+}
+
+export const setMood=async(body)=>{
+    try{
+        const conn=await pool.getConnection();
+        await pool.query(setMoodQ,[body.mood,body.status,body.consulting_id]);
         conn.release();
         return body.consulting_id;
     }catch(err){
