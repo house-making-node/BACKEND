@@ -41,6 +41,10 @@ paths:
                 type: object
                 example: 
                   "consulting_id": 1
+                  "house_size": "5평 ~ 10평"
+                  "room_num": null
+                  "mood": null
+                  "concern": null
                   "status": "step1"
                 
         '400':
