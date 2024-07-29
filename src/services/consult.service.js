@@ -1,7 +1,8 @@
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
 import { addConsultReqResponseDTO } from "../dtos/consult.response.dto.js";
-import { getConsultReq, getUser, setHouseSize, setRoomNumber } from "../models/consult.dao.js";
+import { getConsultReq, setHouseSize, setRoomNumber } from "../models/consult.dao.js";
+import { getUser } from "../models/user.dao.js";
 
 export const addHouseSize=async (body)=>{
     //유저 정보가 있는지 확인
