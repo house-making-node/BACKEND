@@ -1,23 +1,7 @@
 import { pool } from "../../config/db.connect.js";
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
-import { getConsultReqWithIdQ, getUserWithIdQ, setHouseSizeQ } from "./consult.sql.js";
-
-export const getUser=async(id)=>{
-    try{
-        const conn=await pool.getConnection();
-        const [result]=await pool.query(getUserWithIdQ,id);
-        if(result.length == 0){
-            return -1;
-        }
-        conn.release();
-        return result;
-    }catch(err){
-        console.log(err);
-        throw new BaseError(status.INTERNAL_SERVER_ERROR);
-    }
-
-}
+import { getConsultReqWithIdQ, setHouseSizeQ, setMoodQ, setRoomNumberQ, setStatusQ, setConcernQ} from "./consult.sql.js";
 
 export const getConsultReq=async(id)=>{
     try{
@@ -41,6 +25,55 @@ export const setHouseSize=async(body)=>{
         conn.release();
         //insertId는 삽입된 데이터의 id값을 반환(consulting_id)
         return result.insertId;
+    }catch(err){
+        console.log(err);
+        throw new BaseError(status.INTERNAL_SERVER_ERROR);
+    }
+}
+
+export const setRoomNumber=async(body)=>{
+    try{
+        const conn=await pool.getConnection();
+        await pool.query(setRoomNumberQ,[body.room_number,body.status,body.consulting_id]);
+        conn.release();
+        return body.consulting_id;
+    }catch(err){
+        console.log(err);
+        throw new BaseError(status.INTERNAL_SERVER_ERROR);
+    }
+}
+
+export const setMood=async(body)=>{
+    try{
+        const conn=await pool.getConnection();
+        await pool.query(setMoodQ,[body.mood,body.status,body.consulting_id]);
+        conn.release();
+        return body.consulting_id;
+    }catch(err){
+        console.log(err);
+        throw new BaseError(status.INTERNAL_SERVER_ERROR);
+    }
+}
+
+
+export const setStatus=async(body)=>{
+    try{
+        const conn=await pool.getConnection();
+        await pool.query(setStatusQ,[body.status,body.consulting_id]);
+        conn.release();
+        return body.consulting_id;
+    }catch(err){
+        console.log(err);
+        throw new BaseError(status.INTERNAL_SERVER_ERROR);
+    }
+}
+
+export const setConcern=async(body)=>{
+    try{
+        const conn=await pool.getConnection();
+        await pool.query(setConcernQ,[body.concern,body.status,body.consulting_id]);
+        conn.release();
+        return body.consulting_id;
     }catch(err){
         console.log(err);
         throw new BaseError(status.INTERNAL_SERVER_ERROR);
