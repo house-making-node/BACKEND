@@ -248,6 +248,7 @@ paths:
               message:
                 type: string
                 example: 서버 에러, 관리자에게 문의 바랍니다.
+
   /consulting/requirements/concern:
     patch:
       tags:
@@ -267,7 +268,6 @@ paths:
               type: string
               description: 고민 내용
               example: "침대를 어디에 배치해야할지 모르겠어요."
-
       responses:
         '200':
           description: 고민 내용 추가 성공!
@@ -331,3 +331,85 @@ paths:
               message:
                 type: string
                 example: 서버 에러, 관리자에게 문의 바랍니다.
+  /consulting/status:
+    patch:
+      tags:
+        - Consulting
+      summary: status 변경
+      parameters:
+      - name: updateStatus
+        in: body
+        required: true
+        schema:
+          properties:
+            consulting_id:
+              type: bigint
+              description: 컨설팅 id
+              example: 1
+            status:
+              type: string
+              description: 상태
+              example: "답변 대기중"
+      responses:
+        '200':
+          description: status 변경 성공!
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              data:
+                type: object
+                example: 
+                  "consulting_id": 23
+                  "house_size": "5평 ~ 10평"
+                  "room_num": "2개"
+                  "mood": "깔끔한 화이트톤"
+                  "concern": "침대를 어디에 배치해야할지 모르겠어요."
+                  "status": "답변 대기중"
+        '400':
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON001
+              message:
+                type: string
+                example: 잘못된 요청입니다
+
+        '500':
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON000
+              message:
+                type: string
+                example: 서버 에러, 관리자에게 문의 바랍니다.
+
