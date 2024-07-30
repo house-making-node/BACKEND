@@ -3,6 +3,7 @@ import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
 import { insertSubInfoSql, getSubInfoSql } from './home_subscriptions.sql.js';
 
+// 구독데이터 삽입
 export const addSubData = async (body) =>{
     try{
         console.log("home_subscriptions.dao.js [data] : ",body);
