@@ -1,6 +1,9 @@
+// error.js
+
 export class BaseError extends Error {
-    constructor(data){
-        super(data.message);
-        this.data = data;
+    constructor(status, message) {
+        super(message);
+        this.status = status;
+        this.isSuccess = false;
     }
 }
