@@ -45,19 +45,22 @@ export const addHomeLetterConcern = async (req, res, next) => {
 //스크랩 추가
 export const addScrapInfo = async (req, res, next) => {
     try {
-        console.log("해당 자취레터가 스크랩에 추가되었습니다.");
+        console.log("해당 자취레터를 스크랩에 추가합니다.");
         console.log("body: ", req.body);
 
         const { user_id, letter_id } = req.body;
         if (!user_id || !letter_id) {
+            console.log("Missing required fields: user_id, letter_id");
             return res.status(status.BAD_REQUEST).json({
                 error: 'Missing required fields: user_id, letter_id'
             });
         }
 
         const info = await addScrap(req.body);
+        console.log("addScrap response: ", info);
         res.send(response(status.SUCCESS, info));
     } catch (error) {
+        console.log("addScrapInfo [error]: ", error.message, error.stack);
         next(error);
     }
 };

@@ -1,45 +1,68 @@
-//home_scrapes.dao.js
-
 import { pool } from "../../config/db.connect.js";
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
 import { insertScrapInfoSql, getScrapInfoSql } from './home_scrapes.sql.js';
 
-// 스크랩 추가
-export const addScrapData = async (body) =>{
-    try{
-        console.log("home_scrapes.dao.js [data] : ",body);
+export const getLetterById = async (letter_id) => {
+    try {
         const conn = await pool.getConnection();
-        const [result] = await pool.query(insertScrapInfoSql,[
+        const [result] = await conn.query('SELECT * FROM HOME_LETTER WHERE letter_id = ?', [letter_id]);
+        conn.release();
+
+        if (result.length === 0) {
+            return -1;
+        }
+
+        return result[0];
+    } catch (err) {
+        console.log("letter.dao.js getLetterById [err] : ", err.message, err.stack);
+        throw new BaseError(status.INTERNAL_SERVER_ERROR);
+    }
+};
+
+export const addScrapData = async (body) => {
+    try {
+        console.log("home_scrapes.dao.js [data] : ", body);
+
+        // SQL 쿼리와 파라미터를 출력
+        console.log("SQL Query: ", insertScrapInfoSql);
+        console.log("Query Parameters: ", [body.user_id, body.letter_id]);
+
+        const conn = await pool.getConnection();
+        const [result] = await conn.query(insertScrapInfoSql, [
             body.user_id,
             body.letter_id
         ]);
         conn.release();
-        if(result.length == 0){
+
+        console.log("addScrapData result: ", result); // result 객체를 출력하여 확인합니다.
+        if (!result.insertId) {
             return -1;
         }
-
         return result.insertId;
-    }
-    catch(err){
-        console.log("home_scrapes.dao.js [err] : ",err);
+    } catch (err) {
+        // catch 블록에서 발생하는 오류 메시지를 상세하게 출력
+        console.log("home_scrapes.dao.js [err] : ", err.message, err.stack);
         throw new BaseError(status.INTERNAL_SERVER_ERROR);
     }
-}
+};
 
 export const getScrapInfo = async (id) => {
-    try{
+    try {
+        console.log("getScrapInfo [id]: ", id);
         const conn = await pool.getConnection();
         const [result] = await conn.query(getScrapInfoSql, [id]);
         conn.release();
 
-        if(result.length === 0) {
+        console.log("getScrapInfo result: ", result);
+
+        if (result.length === 0) {
             return -1;
         }
 
         return result;
-    }catch (err) {
-        console.log("home_scrapes.dao.js getScrapInfo [err] : ", err);
+    } catch (err) {
+        console.log("home_scrapes.dao.js getScrapInfo [err] : ", err.message, err.stack);
         throw new BaseError(status.INTERNAL_SERVER_ERROR);
     }
-}
+};
