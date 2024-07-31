@@ -7,7 +7,7 @@ import { addInfo } from '../services/share_subscriptions.service.js';
 import { addLetter} from '../services/share_letters.service.js';
 
 import {processAndSaveLetter} from '../services/share_letters_api.service.js';
-
+import { getPreview } from '../providers/share_letters.provider.js';
 
 export const addSubscriptionInfo = async (req,res,next) => {
     try{
@@ -38,6 +38,22 @@ export const addSharedLetter = async (req, res, next) => {
         // 비동기 작업으로 편집 작업 후 SHARED_LETTER 테이블에 최종 저장
         processAndSaveLetter(letter.share_id, req.body.nickname, req.body.experience_detail, s3Key);
     } catch (error) {
+        next(error);
+    }
+};
+
+
+export const lettersPreview = async (req, res, next) => {
+    try{
+        console.log("공유레터가 조회됩니다.");
+        console.log("body: ", req.body);
+
+        const {offset, limit} = req.query;
+
+        const preview = await getPreview(offset,limit);
+
+        return res.send(response(status.SUCCESS, preview));
+    } catch(error){
         next(error);
     }
 };
