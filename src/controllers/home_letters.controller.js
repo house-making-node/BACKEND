@@ -5,6 +5,7 @@ import { status } from '../../config/response.status.js';
 import { addInfo } from '../services/home_subscriptions.service.js';
 import { addConcern } from '../services/home_concerns.service.js';
 import { submitOpinion } from '../services/home_opinion.service.js';
+import { addScrap } from '../services/home_scrapes.service.js';
 //이미지 업로드
 import { uploadToS3 } from '../middleware/image.uploader.js';
 
@@ -76,5 +77,28 @@ export const addHomeLetterConcern = async (req, res, next) => {
     } catch (error) {
         console.error("addHomeLetterConcern [error]: ", error);
         res.status(500).json(response({isSuccess: false, code: 'COMMON000', message: '서버 에러, 관리자에게 문의 바랍니다.'}, error.message));
+    }
+};
+
+//스크랩 추가
+export const addScrapInfo = async (req, res, next) => {
+    try {
+        console.log("해당 자취레터를 스크랩에 추가합니다.");
+        console.log("body: ", req.body);
+
+        const { user_id, letter_id } = req.body;
+        if (!user_id || !letter_id) {
+            console.log("Missing required fields: user_id, letter_id");
+            return res.status(status.BAD_REQUEST).json({
+                error: 'Missing required fields: user_id, letter_id'
+            });
+        }
+
+        const info = await addScrap(req.body);
+        console.log("addScrap response: ", info);
+        res.send(response(status.SUCCESS, info));
+    } catch (error) {
+        console.log("addScrapInfo [error]: ", error.message, error.stack);
+        next(error);
     }
 };
