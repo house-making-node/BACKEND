@@ -1,0 +1,191 @@
+info:
+  title : 공유레터 API
+  description: 공유레터 구독정보/제출/리스트/의견을 관리하는 API
+
+paths:
+  /share_letters/subscribe:
+    post:
+      summary: 사용자의 공유레터 구독정보 저장
+      requestBody:
+        required: true
+        content: 
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: bigint
+                  example: 1
+                email:
+                  type: string
+                  maxLength: 15
+                  example: "user@example.com"
+                name: 
+                  type: string
+                  maxLength: 10
+                  example: "user"
+      responses:
+        '200':
+          description: 사용자 구독정보 저장 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      user_id:
+                        type: bigint
+                        example: 1
+                      email:
+                        type: string
+                        example: "user@example.com"
+                      name:
+                        type: string
+                        example: "user"
+        '400' :
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON001
+              message:
+                type: string
+                example: 잘못된 요청입니다
+        '500' :
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON000
+              message:
+                type: string
+                example: 서버 에러, 관리자에게 문의 바랍니다.
+  /share_letters/submit:
+    post:
+     summary: 공유레터 제출하기
+     requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              user_id: 
+                type: bigint
+                example: 1
+              nickname:
+                type: string
+                maxLength: 50
+                example: "user"
+              age :
+                type: integer
+                example: 20
+              experience_detail:
+                type: text
+                exmaple: "example"
+              experience_comment:
+                type: text
+                example: "example"
+              title:
+                type: string
+                maxLength: 100
+                example: "title"
+              image:
+                type: string
+                format: binary
+      responses:
+        '200':
+          description: 공유레터 제출 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      user_id:
+                        type: integer
+                        example: 1
+                      share_id:
+                        type: bigint
+                        example: 1
+                      title:
+                        type: string
+                        maxLength: 50
+                        example: "My Experience"
+                      nickname:
+                        type: string
+                        maxLength: 50
+                        example: "user"
+                      age:
+                        type: integer
+                        example: 25
+                      experience_detail:
+                        type: string
+                        example: "공유레터 내용"
+                      experience_comment:
+                        type: string
+                        example: "하고 싶은 말"
+                      s3_key:
+                        type: string
+                        example: "path/to/s3/image.jpg"
+        '400' :
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON001
+              message:
+                type: string
+                example: 잘못된 요청입니다
+        '500' :
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON000
+              message:
+                type: string
+                example: 서버 에러, 관리자에게 문의 바랍니다.
+                      

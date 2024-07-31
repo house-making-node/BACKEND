@@ -9,3 +9,8 @@ export const getSharedLetterSql = `
     FROM SHARE
     WHERE share_id = ?
 `;
+
+export const insertSharedLetterContentSql = `
+    INSERT INTO SHARED_LETTER (share_id, content, s3_key, title)
+    VALUES (?, ?, ?, ?)
+`;
