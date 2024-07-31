@@ -1,6 +1,6 @@
 import express from 'express'          // ES6
 import dotenv from 'dotenv';
-
+import bodyParser from 'body-parser';
 import { specs } from "./config/swagger.config.js";
 import SwaggerUi from "swagger-ui-express";
 import { response } from './config/response.js';
@@ -23,6 +23,7 @@ app.set('port', process.env.PORT || 3000)   // 서버 포트 지정
 app.use(cors());
 app.use(express.static('public'));          // 정적 파일 접근
 app.use(express.json());                    // request의 본문을 json으로 해석할 수 있도록 함
+app.use(bodyParser.json());
 app.use(express.urlencoded({extended: false}));
 
 app.get('/', function (req, res) {
