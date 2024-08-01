@@ -16,8 +16,14 @@ export const insertSharedLetterContentSql = `
 `;
 
 export const selectLettersPreviewSql = `
-    SELECT letter_id, share_id, title, s3_key, content, created_at
+    SELECT letter_id, share_id, title, s3_key, created_at
     FROM SHARED_LETTER
     ORDER BY created_at DESC
     LIMIT ? OFFSET ?
+`;
+
+export const selectSharedLetterSql = `
+    SELECT letter_id, share_id, title, s3_key, content, created_at
+    FROM SHARED_LETTER
+    WHERE letter_id = ?
 `;
