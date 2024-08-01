@@ -7,6 +7,7 @@ import { addHomeLetter } from '../models/home_letters.dao.js';
 import { homeLetterResponseDTO } from '../dtos/home_letters.dto.js';
 import { addConcern } from '../services/home_concerns.service.js';
 import { addScrap, getScrapDetailsByUserId as getScrapDetailsService } from '../services/home_scrapes.service.js';
+import { getLetterDetail } from '../services/home_letters.service.js';
 //이미지 업로드
 import { uploadToS3 } from '../middleware/image.uploader.js';
 
@@ -36,6 +37,41 @@ export const getScrapDetailsByUserId = async (req, res, next) => {
         });
     } catch (error) {
         console.error("getScrapDetailsByUserId [error]: ", error);
+        res.status(status.INTERNAL_SERVER_ERROR.status).json({
+            status: status.INTERNAL_SERVER_ERROR.status,
+            isSuccess: status.INTERNAL_SERVER_ERROR.isSuccess,
+            code: status.INTERNAL_SERVER_ERROR.code,
+            message: status.INTERNAL_SERVER_ERROR.message
+        });
+    }
+};
+
+//특정 자취레터 상세조회
+export const getLetterDetailById = async (req, res, next) => {
+    try {
+        console.log("해당 자취레터의 상세정보가 조회됩니다.");
+        const { letter_id } = req.params;
+        console.log("letter_id: ", letter_id);
+        const letterDetail = await getLetterDetail(letter_id);
+
+        if (!letterDetail) {
+            return res.status(status.NOT_FOUND.status).json({
+                status: status.NOT_FOUND.status,
+                isSuccess: status.NOT_FOUND.isSuccess,
+                code: status.NOT_FOUND.code,
+                message: status.NOT_FOUND.message
+            });
+        }
+
+        res.status(status.SUCCESS.status).json({
+            status: status.SUCCESS.status,
+            isSuccess: status.SUCCESS.isSuccess,
+            code: status.SUCCESS.code,
+            message: status.SUCCESS.message,
+            result: letterDetail
+        });
+    } catch (error) {
+        console.error("getLetterDetailById [error]: ", error);
         res.status(status.INTERNAL_SERVER_ERROR.status).json({
             status: status.INTERNAL_SERVER_ERROR.status,
             isSuccess: status.INTERNAL_SERVER_ERROR.isSuccess,
