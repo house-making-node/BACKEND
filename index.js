@@ -13,7 +13,7 @@ import cors from 'cors';
 import { homelettersRouter } from './src/routes/home_letters.route.js';
 import {sharelettersRouter} from './src/routes/share_letters.route.js'
 import { consultRouter } from './src/routes/consult.route.js';
-
+import { userRouter } from './src/routes/user.route.js';
 dotenv.config();
 
 const app = express()
@@ -35,7 +35,8 @@ app.use('/api-docs', SwaggerUi.serve, SwaggerUi.setup(specs));
 // router setting
 app.use('/share_letters',sharelettersRouter);
 app.use('/home_letters', homelettersRouter);
-
+//마이페이지
+app.use('/user', userRouter);
 //컨설팅
 app.use('/consulting',consultRouter);
 
