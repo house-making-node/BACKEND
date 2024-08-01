@@ -1,7 +1,7 @@
 import { pool } from "../../config/db.connect.js";
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
-import { insertSharedLetterSql, getSharedLetterSql, insertSharedLetterContentSql  } from './share_letters.sql.js';
+import { insertSharedLetterSql, getSharedLetterSql, insertSharedLetterContentSql, selectLettersPreviewSql, selectSharedLetterSql } from './share_letters.sql.js';
 
 export const addLetterData = async (body) =>{
     try{
@@ -46,7 +46,7 @@ export const getLetterData = async (id) => {
     }
 }
 
-export const updateSharedLetterTable = async (share_id, content, s3_key, title) => {
+export const insertSharedLetterTable = async (share_id, content, s3_key, title) => {
     try {
         const conn = await pool.getConnection();
         const [result] = await conn.query(insertSharedLetterContentSql, [
@@ -62,5 +62,41 @@ export const updateSharedLetterTable = async (share_id, content, s3_key, title) 
     } catch (err) {
         console.error('Error updating SHARED_LETTER table:', err);
         throw err;
+    }
+}
+
+
+
+export const getLettersPreview = async (offset, limit) => {
+    try {
+        const conn = await pool.getConnection();
+        const query = selectLettersPreviewSql;
+        const params = [limit, offset];
+
+        const [result] = await conn.query(query, params);
+        conn.release();
+
+        return result;
+    } catch (err) {
+        console.log("share_letters.dao.js getLettersPreview [err]: ", err);
+        throw new BaseError(status.INTERNAL_SERVER_ERROR);
+    }
+};
+
+
+export const getLetterDataById = async (letterId) => {
+    try{
+        const conn = await pool.getConnection();
+        const [result] = await conn.query(selectSharedLetterSql, [letterId]);
+        conn.release();
+
+        if(result.length === 0) {
+            return -1;
+        }
+
+        return result;
+    }catch (err) {
+        console.log("share_letters.dao.js getLetterDataById [err] : ", err);
+        throw new BaseError(status.INTERNAL_SERVER_ERROR);
     }
 }

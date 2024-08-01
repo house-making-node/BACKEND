@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import { updateSharedLetterTable } from '../models/share_letters.dao.js';
+import { insertSharedLetterTable } from '../models/share_letters.dao.js';
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY // API 키
@@ -35,7 +35,7 @@ export const processAndSaveLetter = async (shareId, nickname, experienceDetail, 
         const editedContent = summaryMatch ? summaryMatch[1].trim() : fullResponse.trim(); // 요약이 없으면 전체 내용
 
         // SHARED_LETTER 테이블에 편집된 내용과 제목 저장
-        await updateSharedLetterTable(shareId, editedContent, s3Key, title);
+        await insertSharedLetterTable(shareId, editedContent, s3Key, title);
 
         console.log(`Letter with shareId ${shareId} successfully saved to SHARED_LETTER table.`);
     } catch (error) {

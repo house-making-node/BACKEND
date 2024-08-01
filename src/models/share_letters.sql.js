@@ -14,3 +14,16 @@ export const insertSharedLetterContentSql = `
     INSERT INTO SHARED_LETTER (share_id, content, s3_key, title)
     VALUES (?, ?, ?, ?)
 `;
+
+export const selectLettersPreviewSql = `
+    SELECT letter_id, share_id, title, s3_key, created_at
+    FROM SHARED_LETTER
+    ORDER BY created_at DESC
+    LIMIT ? OFFSET ?
+`;
+
+export const selectSharedLetterSql = `
+    SELECT letter_id, share_id, title, s3_key, content, created_at
+    FROM SHARED_LETTER
+    WHERE letter_id = ?
+`;
