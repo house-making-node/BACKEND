@@ -1,5 +1,6 @@
-import { getLettersPreview } from '../models/share_letters.dao.js';
-import { previewLettersResponseDTO } from '../dtos/share_letters.dto.js';
+import { getLettersPreview, getLetterDataById } from '../models/share_letters.dao.js';
+import { previewLettersResponseDTO, getLetterByIdResponseDTO } from '../dtos/share_letters.dto.js';
+import { status } from '../../config/response.status.js';
 
 export const getPreview = async (offset, limit) => {
 
@@ -11,4 +12,21 @@ export const getPreview = async (offset, limit) => {
 
     // 조회한 레터 목록과 offset, limit 값을 포함한 객체를 반환
     return previewLettersResponseDTO(letters);
+};
+
+
+export const getLetterDetails = async (letterId) => {
+    try {
+        const letter = await getLetterDataById(letterId);
+
+        if (!letter) {
+            throw new BaseError(status.NOT_FOUND, 'Letter not found');
+        }
+
+        return getLetterByIdResponseDTO(letter);
+
+    } catch (error) {
+        console.error("Error fetching letter details: ", error);
+        throw new BaseError(status.INTERNAL_SERVER_ERROR, error.message);
+    }
 };

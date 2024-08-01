@@ -7,7 +7,7 @@ import { addInfo } from '../services/share_subscriptions.service.js';
 import { addLetter} from '../services/share_letters.service.js';
 
 import {processAndSaveLetter} from '../services/share_letters_api.service.js';
-import { getPreview } from '../providers/share_letters.provider.js';
+import { getPreview, getLetterDetails } from '../providers/share_letters.provider.js';
 
 export const addSubscriptionInfo = async (req,res,next) => {
     try{
@@ -53,6 +53,20 @@ export const lettersPreview = async (req, res, next) => {
         const preview = await getPreview(offset,limit);
 
         return res.send(response(status.SUCCESS, preview));
+    } catch(error){
+        next(error);
+    }
+};
+
+
+export const getLetterById = async (req, res, next) => {
+    try{
+        console.log("특정 공유레터가 조회됩니다.");
+        console.log("body: ", req.body);
+
+        const { letter_id } = req.params;
+
+        return res.send(response(status.SUCCESS, await getLetterDetails(letter_id)));
     } catch(error){
         next(error);
     }
