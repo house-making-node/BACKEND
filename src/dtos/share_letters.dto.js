@@ -20,12 +20,22 @@ export const previewLettersResponseDTO = (data) => {
             "share_id": data[i].share_id,
             "title" : data[i].title,
             "s3_key" : data[i].s3_key,
-            "content" : data[i].content,
-            "create_data" : formatDate(data[i].created_at)
+            "create_at" : formatDate(data[i].created_at)
         })
     }
 
     return {"Letter": letters}
+}
+
+export const getLetterByIdResponseDTO = (letter) => {
+    return {
+        'letter_id': letter[0].letter_id,
+        'share_id': letter[0].share_id,
+        'title' : letter[0].title,
+        's3_key' : letter[0].s3_key,
+        'content' : letter[0].content,
+        "create_at" : formatDate(letter[0].created_at)
+    };
 }
 
 const formatDate = (date) => {
