@@ -1,0 +1,92 @@
+paths:
+  /faq/inquiry:
+    get:
+      summary: 질문 가져오기
+      description: FAQ 게시판에 작성된 질문을 가져옵니다.
+      responses:
+        "200":
+          description: 질문 목록
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        question:
+                          type: string
+                          example: "인테리어 컨설팅은 어떤 서비스를 제공하나요?"
+        "500":
+          description: 질문 검색 중 오류 발생
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "질문 불러오기를 실패했습니다."
+
+  /faq/response:
+    get:
+      summary: 질문에 대한 답변 받기
+      description: 질문 ID로 답변을 검색합니다.
+      parameters:
+        - in: query
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: 질문 ID
+      responses:
+        "200":
+          description: 질문에 대한 응답
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  response:
+                    type: string
+                    example: "집꾸의 인테리어 컨설팅은 공간 분석, 디자인 제안, 가구 및 소품 추천 등의 종합적인 인테리어 솔루션을 제공합니다."
+        "404":
+          description: Response not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Response not found"
+        "500":
+          description: Error retrieving response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "답변 불러오기를 실패했습니다."
