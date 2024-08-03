@@ -1,8 +1,12 @@
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
 import { getUser } from '../models/user.dao.js';
-import { addScrapData, getScrapInfo, getLetterById } from '../models/home_scrapes.dao.js';
+import { addScrapData, getScrapInfo, getLetterById, getScrapDetailsByUserIdDao } from '../models/home_scrapes.dao.js';
 import { addScrapInfoResponseDTO } from '../dtos/home_scrapes.dto.js';
+
+export const getScrapDetailsByUserId = async (user_id) => {
+    return await getScrapDetailsByUserIdDao(user_id);
+};
 
 export const addScrap = async (body) => {
     console.log("addScrap [body]: ", body);

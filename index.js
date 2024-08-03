@@ -14,6 +14,7 @@ import { homelettersRouter } from "./src/routes/home_letters.route.js";
 import { sharelettersRouter } from "./src/routes/share_letters.route.js";
 import { consultRouter } from "./src/routes/consult.route.js";
 import { faqRouter } from "./src/routes/faq.route.js";
+import { userRouter } from './src/routes/user.route.js';
 
 dotenv.config();
 
@@ -39,6 +40,7 @@ app.use("/share_letters", sharelettersRouter);
 app.use("/home_letters", homelettersRouter);
 app.use("/consulting", consultRouter); //컨설팅
 app.use("/faq", faqRouter); //faq게시판
+app.use('/user', userRouter); //마이페이지
 
 // error handling
 app.use((req, res, next) => {

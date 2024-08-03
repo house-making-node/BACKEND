@@ -6,11 +6,46 @@ import { getRefinedContent } from '../services/gpt.service.js';
 import { addHomeLetter } from '../models/home_letters.dao.js';
 import { homeLetterResponseDTO } from '../dtos/home_letters.dto.js';
 import { addConcern } from '../services/home_concerns.service.js';
+import { addScrap, getScrapDetailsByUserId as getScrapDetailsService } from '../services/home_scrapes.service.js';
 import { submitOpinion } from '../services/home_opinion.service.js';
-import { addScrap } from '../services/home_scrapes.service.js';
 import { getLetterDetail } from '../services/home_letters.service.js';
 //이미지 업로드
 import { uploadToS3 } from '../middleware/image.uploader.js';
+
+//자취레터 스크랩 조회하기
+export const getScrapDetailsByUserId = async (req, res, next) => {
+    try {
+        console.log("해당 사용자의 자취레터 스크랩을 조회합니다.");
+        const { user_id } = req.params;
+        console.log("user_id: ", user_id);
+        const scrapDetails = await getScrapDetailsService(user_id);
+
+        if (!scrapDetails || scrapDetails.length === 0) {
+            return res.status(status.NOT_FOUND.status).json({
+                status: status.NOT_FOUND.status,
+                isSuccess: status.NOT_FOUND.isSuccess,
+                code: status.NOT_FOUND.code,
+                message: status.NOT_FOUND.message
+            });
+        }
+
+        res.status(status.SUCCESS.status).json({
+            status: status.SUCCESS.status,
+            isSuccess: status.SUCCESS.isSuccess,
+            code: status.SUCCESS.code,
+            message: status.SUCCESS.message,
+            result: scrapDetails
+        });
+    } catch (error) {
+        console.error("getScrapDetailsByUserId [error]: ", error);
+        res.status(status.INTERNAL_SERVER_ERROR.status).json({
+            status: status.INTERNAL_SERVER_ERROR.status,
+            isSuccess: status.INTERNAL_SERVER_ERROR.isSuccess,
+            code: status.INTERNAL_SERVER_ERROR.code,
+            message: status.INTERNAL_SERVER_ERROR.message
+        });
+    }
+};
 
 //자취레터 의견제출
 export const submitLetterOpinion = async (req, res, next) => {
