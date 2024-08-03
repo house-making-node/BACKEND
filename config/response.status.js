@@ -15,5 +15,6 @@ export const status = {
     FORBIDDEN: {status: StatusCodes.FORBIDDEN, "isSuccess": false, "code": "COMMON004", "message": "금지된 요청입니다." },
     NOT_FOUND: {status: StatusCodes.NOT_FOUND, "isSuccess": false, "code": "COMMON005", "message": "요청한 페이지를 찾을 수 없습니다. 관리자에게 문의 바랍니다." },
     USER_NOT_FOUND: {status: StatusCodes.BAD_REQUEST, "isSuccess": false, "code": "MEMBER4001", "message": "사용자가 없습니다."},
-    CONSULT_NOT_FOUND: {status: StatusCodes.BAD_REQUEST, "isSuccess": false, "code": "CONSULT4001", "message": "컨설팅 정보가 없습니다."}
+    CONSULT_NOT_FOUND: {status: StatusCodes.BAD_REQUEST, "isSuccess": false, "code": "CONSULT4001", "message": "컨설팅 정보가 없습니다."},
+    DIRECTORY_NOT_FOUND: {status: StatusCodes.BAD_REQUEST, "isSuccess": false, "code": "IMAGE4001", "message": "s3 디렉토리가 존재하지 않습니다." },
 }
