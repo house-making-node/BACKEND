@@ -8,3 +8,10 @@ export const addConsultReqResponseDTO = (data) => {
         "status": data[0].status
     };
 };
+
+export const getConsultStatusResponseDTO=(data)=>{
+    return {
+        "consulting_id":data[0].id,
+        "status":data[0].status
+    }
+}

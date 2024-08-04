@@ -8,4 +8,3 @@ consultRouter.patch('/requirements/room_num', expressAsyncHandler(roomNumberAdd)
 consultRouter.patch('/requirements/mood', expressAsyncHandler(moodAdd));
 consultRouter.patch('/requirements/concern', expressAsyncHandler(concernAdd));
 consultRouter.patch('/status', expressAsyncHandler(statusAdd));
-

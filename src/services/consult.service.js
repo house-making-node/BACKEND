@@ -1,6 +1,6 @@
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
-import { addConsultReqResponseDTO } from "../dtos/consult.response.dto.js";
+import { addConsultReqResponseDTO, getConsultStatusResponseDTO } from "../dtos/consult.response.dto.js";
 import { getConsultReq, setHouseSize, setMood, setRoomNumber, setConcern, setStatus } from "../models/consult.dao.js";
 import { getUser } from "../models/user.dao.js";
 
@@ -81,4 +81,11 @@ export const addStatus=async (body)=>{
     });
     return addConsultReqResponseDTO(await getConsultReq(addStatusData));
 }
-  
+
+export const getConsultingStatus=async (consulting_id)=>{
+    const getConsultData=await getConsultReq(consulting_id);
+    if(getConsultData==-1){
+        throw new BaseError(status.CONSULT_NOT_FOUND);
+    }
+    return getConsultStatusResponseDTO(getConsultData);
+}
