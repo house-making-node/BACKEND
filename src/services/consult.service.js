@@ -82,3 +82,10 @@ export const addStatus=async (body)=>{
     return addConsultReqResponseDTO(await getConsultReq(addStatusData));
 }
   
+export const getConsultRequest=async (consulting_id)=>{
+    const getConsultData=await getConsultReq(consulting_id);
+    if(getConsultData==-1){
+        throw new BaseError(status.CONSULT_NOT_FOUND);
+    }
+    return addConsultReqResponseDTO(getConsultData);
+}
