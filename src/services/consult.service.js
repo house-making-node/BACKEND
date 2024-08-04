@@ -70,15 +70,15 @@ export const addConcern=async(body)=>{
 
 }
 
-export const addStatus=async (body)=>{
+export const updateStatus=async (body)=>{
     const getConsultData=await getConsultReq(body.consulting_id);
     if(getConsultData==-1){
         throw new BaseError(status.CONSULT_NOT_FOUND);
     }
-    const addStatusData=await setStatus({
+    const updateStatusData=await setStatus({
         'consulting_id':body.consulting_id,
         'status':body.status,
     });
-    return addConsultReqResponseDTO(await getConsultReq(addStatusData));
+    return addConsultReqResponseDTO(await getConsultReq(updateStatusData));
 }
   
