@@ -1,6 +1,6 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
-import { houseSizeAdd, moodAdd, roomNumberAdd, concernAdd, statusAdd, roomImageAdd } from '../controllers/consult.controller.js';
+import { houseSizeAdd, moodAdd, roomNumberAdd, concernAdd, statusAdd, roomImageAdd, blueprintAdd } from '../controllers/consult.controller.js';
 import { imageUploader } from '../middleware/image.uploader.js';
 
 export const consultRouter = express.Router();
@@ -10,3 +10,4 @@ consultRouter.patch('/requirements/mood', expressAsyncHandler(moodAdd));
 consultRouter.patch('/requirements/concern', expressAsyncHandler(concernAdd));
 consultRouter.patch('/status', expressAsyncHandler(statusAdd));
 consultRouter.post('/requirements/room_image', imageUploader.single('image'),expressAsyncHandler(roomImageAdd));
+consultRouter.post('/requirements/blueprint',imageUploader.single('image'),expressAsyncHandler(blueprintAdd));

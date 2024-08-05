@@ -1,7 +1,7 @@
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
-import { addConsultReqResponseDTO, roomImagesResponseDTO } from "../dtos/consult.response.dto.js";
-import { getConsultReq, setHouseSize, setMood, setRoomNumber, setConcern, setStatus, setImage, getRoomImage } from "../models/consult.dao.js";
+import { addConsultReqResponseDTO, addImageResponseDTO } from "../dtos/consult.response.dto.js";
+import { getConsultReq, setHouseSize, setMood, setRoomNumber, setConcern, setStatus, setRoomImage, getRoomImage, setBlueprint, getBlueprint } from "../models/consult.dao.js";
 import { getUser } from "../models/user.dao.js";
 
 export const addHouseSize=async (body)=>{
@@ -87,7 +87,7 @@ export const addRoomImages=async(body,s3_key)=>{
     if(getConsultData==-1){
         throw new BaseError(status.CONSULT_NOT_FOUND);
     }
-    const addImagesData=await setImage({
+    const addImagesData=await setRoomImage({
         'consulting_id':body.consulting_id,
         's3_key':s3_key
     });
@@ -101,7 +101,28 @@ export const addRoomImages=async(body,s3_key)=>{
     else{
         console.log(await getConsultReq(updateStatusData));
         console.log(await getRoomImage(addImagesData));
-        return roomImagesResponseDTO(await getConsultReq(updateStatusData),await getRoomImage(addImagesData));
+        return addImageResponseDTO(await getConsultReq(updateStatusData),await getRoomImage(addImagesData));
     }
     
+}
+
+export const addBlueprints=async(body,s3_key)=>{
+    const getConsultData=await getConsultReq(body.consulting_id);
+    if(getConsultData==-1){
+        throw new BaseError(status.CONSULT_NOT_FOUND);
+    }
+    const addBlueprintData=await setBlueprint({
+        'consulting_id':body.consulting_id,
+        's3_key':s3_key
+    });
+    const updateStatusData=await setStatus({
+        'consulting_id':body.consulting_id,
+        'status':'step3'
+    });
+    if(addBlueprintData==-1){
+        throw new BaseError(status.FAIL, "이미지 추가 실패");
+    }
+    else{
+        return addImageResponseDTO(await getConsultReq(updateStatusData),await getBlueprint(addBlueprintData));
+    }
 }

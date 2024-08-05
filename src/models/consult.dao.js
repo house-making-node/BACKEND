@@ -1,7 +1,7 @@
 import { pool } from "../../config/db.connect.js";
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
-import { getConsultReqWithIdQ, setHouseSizeQ, setMoodQ, setRoomNumberQ, setStatusQ, setConcernQ, setImageQ, getRoomImageWithIdQ} from "./consult.sql.js";
+import { getConsultReqWithIdQ, setHouseSizeQ, setMoodQ, setRoomNumberQ, setStatusQ, setConcernQ, setRoomImageQ, getRoomImageWithIdQ, setBlueprintQ} from "./consult.sql.js";
 
 export const getConsultReq=async(id)=>{
     try{
@@ -80,10 +80,10 @@ export const setConcern=async(body)=>{
     }
 }
 
-export const setImage=async(body)=>{
+export const setRoomImage=async(body)=>{
     try{
         const conn=await pool.getConnection();
-        const [result]=await pool.query(setImageQ,[body.consulting_id,body.s3_key]);
+        const [result]=await pool.query(setRoomImageQ,[body.consulting_id,body.s3_key]);
         conn.release();
         return result.insertId; //room_image의 id
     }catch(err){
@@ -96,6 +96,34 @@ export const getRoomImage=async(id)=>{
     try{
         const conn=await pool.getConnection();
         const [result]=await pool.query(getRoomImageWithIdQ,id);
+        if(result.length==0){
+            return -1;
+        }
+        conn.release();
+        return result;
+    }
+    catch(err){
+        console.log(err);
+        throw new BaseError(status.INTERNAL_SERVER_ERROR);
+    }
+}
+
+export const setBlueprint=async(body)=>{
+    try{
+        const conn=await pool.getConnection();
+        await pool.query(setBlueprintQ,[body.consulting_id,body.s3_key]);
+        conn.release();
+        return body.insertId;
+    }catch(err){
+        console.log(err);
+        throw new BaseError(status.INTERNAL_SERVER_ERROR);
+    }
+}
+
+export const getBlueprint=async(id)=>{
+    try{
+        const conn=await pool.getConnection();
+        const [result]=await pool.query(getBlueprintWithIdQ,id);
         if(result.length==0){
             return -1;
         }

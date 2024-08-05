@@ -9,7 +9,7 @@ export const addConsultReqResponseDTO = (data) => {
     };
 };
 
-export const roomImagesResponseDTO=(consult_data,image_data)=>{
+export const addImageResponseDTO=(consult_data,image_data)=>{
     return {
         consulting_id: image_data[0].consulting_id,
         image_id: image_data[0].id,

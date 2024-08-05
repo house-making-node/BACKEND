@@ -1,7 +1,7 @@
 // consult.controller.js
 import { response } from "../../config/response.js";
 import { status } from "../../config/response.status.js";
-import { addHouseSize, addMood, addRoomNumber, addConcern, addStatus, addRoomImages } from "../services/consult.service.js";
+import { addHouseSize, addMood, addRoomNumber, addConcern, addStatus, addRoomImages, addBlueprints } from "../services/consult.service.js";
 
 export const houseSizeAdd = async (req, res, next) => {
     try {
@@ -60,6 +60,20 @@ export const roomImageAdd=async(req,res,next)=>{
         console.log("s3_key", req.file.key);
         
         const result=await addRoomImages(req.body,req.file.key);
+        res.send(response(status.SUCCESS,result));
+    }catch(error){
+        console.log(error);
+        next(error);
+    }
+}
+
+export const blueprintAdd=async(req,res,next)=>{
+    try{
+        console.log("body", req.body);
+        console.log("file", req.file);
+        console.log("s3_key", req.file.key);
+        
+        const result=await addBlueprints(req.body,req.file.key);
         res.send(response(status.SUCCESS,result));
     }catch(error){
         console.log(error);
