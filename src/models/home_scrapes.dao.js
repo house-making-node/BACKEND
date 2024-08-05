@@ -3,6 +3,24 @@ import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
 import { insertScrapInfoSql, getScrapInfoSql } from './home_scrapes.sql.js';
 
+export const getScrapDetailsByUserIdDao = async (user_id) => {
+    try {
+        const conn = await pool.getConnection();
+        const query = `
+            SELECT hl.letter_id, hs.user_id, hl.title, hl.s3_key
+            FROM HOME_SCRAP hs
+            JOIN HOME_LETTER hl ON hs.letter_id = hl.letter_id
+            WHERE hs.user_id = ?
+        `;
+        const [rows] = await conn.query(query, [user_id]);
+        conn.release();
+        return rows;
+    } catch (err) {
+        console.log("getScrapDetailsByUserIdDao [error]: ", err);
+        throw new BaseError(status.INTERNAL_SERVER_ERROR);
+    }
+};
+
 export const getLetterById = async (letter_id) => {
     try {
         const conn = await pool.getConnection();
