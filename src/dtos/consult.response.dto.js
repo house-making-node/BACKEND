@@ -8,3 +8,12 @@ export const addConsultReqResponseDTO = (data) => {
         "status": data[0].status
     };
 };
+
+export const roomImagesResponseDTO=(consult_data,image_data)=>{
+    return {
+        consulting_id: image_data[0].consulting_id,
+        image_id: image_data[0].id,
+        s3_key:image_data[0].s3_key,
+        status: consult_data[0].status
+    };
+}
