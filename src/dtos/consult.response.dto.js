@@ -16,4 +16,11 @@ export const addImageResponseDTO=(consult_data,image_data)=>{
         s3_key:image_data[0].s3_key,
         status: consult_data[0].status
     };
-}
+};
+
+export const getConsultStatusResponseDTO=(data)=>{
+    return {
+        "consulting_id":data[0].id,
+        "status":data[0].status
+    };
+};  
