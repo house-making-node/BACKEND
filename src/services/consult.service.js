@@ -1,6 +1,6 @@
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
-import { addConsultReqResponseDTO, roomImagesResponseDTO, getConsultStatusResponseDTO } from "../dtos/consult.response.dto.js";
+import { addConsultReqResponseDTO, roomImagesResponseDTO } from "../dtos/consult.response.dto.js";
 import { getConsultReq, setHouseSize, setMood, setRoomNumber, setConcern, setStatus, setImage, getRoomImage } from "../models/consult.dao.js";
 import { getUser } from "../models/user.dao.js";
 
@@ -80,22 +80,6 @@ export const updateStatus=async (body)=>{
         'status':body.status,
     });
     return addConsultReqResponseDTO(await getConsultReq(updateStatusData));
-}
-
-export const getConsultRequest=async (consulting_id)=>{
-    const getConsultData=await getConsultReq(consulting_id);
-    if(getConsultData==-1){
-        throw new BaseError(status.CONSULT_NOT_FOUND);
-    }
-    return addConsultReqResponseDTO(getConsultData);
-}
-
-export const getConsultingStatus=async (consulting_id)=>{
-    const getConsultData=await getConsultReq(consulting_id);
-    if(getConsultData==-1){
-        throw new BaseError(status.CONSULT_NOT_FOUND);
-    }
-    return getConsultStatusResponseDTO(getConsultData);
 }
 
 export const addRoomImages=async(body,s3_key)=>{
