@@ -1,7 +1,7 @@
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
-import { addConsultReqResponseDTO } from "../dtos/consult.response.dto.js";
-import { getConsultReq, setHouseSize, setMood, setRoomNumber, setConcern, setStatus } from "../models/consult.dao.js";
+import { addConsultReqResponseDTO, roomImagesResponseDTO, getConsultStatusResponseDTO } from "../dtos/consult.response.dto.js";
+import { getConsultReq, setHouseSize, setMood, setRoomNumber, setConcern, setStatus, setImage, getRoomImage } from "../models/consult.dao.js";
 import { getUser } from "../models/user.dao.js";
 
 export const addHouseSize=async (body)=>{
@@ -70,15 +70,53 @@ export const addConcern=async(body)=>{
 
 }
 
-export const addStatus=async (body)=>{
+export const updateStatus=async (body)=>{
     const getConsultData=await getConsultReq(body.consulting_id);
     if(getConsultData==-1){
         throw new BaseError(status.CONSULT_NOT_FOUND);
     }
-    const addStatusData=await setStatus({
+    const updateStatusData=await setStatus({
         'consulting_id':body.consulting_id,
         'status':body.status,
     });
-    return addConsultReqResponseDTO(await getConsultReq(addStatusData));
+    return addConsultReqResponseDTO(await getConsultReq(updateStatusData));
 }
-  
+
+export const getConsultRequest=async (consulting_id)=>{
+    const getConsultData=await getConsultReq(consulting_id);
+    if(getConsultData==-1){
+        throw new BaseError(status.CONSULT_NOT_FOUND);
+    }
+    return addConsultReqResponseDTO(getConsultData);
+}
+
+export const getConsultingStatus=async (consulting_id)=>{
+    const getConsultData=await getConsultReq(consulting_id);
+    if(getConsultData==-1){
+        throw new BaseError(status.CONSULT_NOT_FOUND);
+    }
+    return getConsultStatusResponseDTO(getConsultData);
+}
+
+export const addRoomImages=async(body,s3_key)=>{
+    const getConsultData=await getConsultReq(body.consulting_id);
+    if(getConsultData==-1){
+        throw new BaseError(status.CONSULT_NOT_FOUND);
+    }
+    const addImagesData=await setImage({
+        'consulting_id':body.consulting_id,
+        's3_key':s3_key
+    });
+    const updateStatusData=await setStatus({
+        'consulting_id':body.consulting_id,
+        'status':'step3'
+    });
+    if(addImagesData==-1){
+        throw new BaseError(status.FAIL, "이미지 추가 실패");
+    }
+    else{
+        console.log(await getConsultReq(updateStatusData));
+        console.log(await getRoomImage(addImagesData));
+        return roomImagesResponseDTO(await getConsultReq(updateStatusData),await getRoomImage(addImagesData));
+    }
+}
