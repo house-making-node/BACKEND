@@ -1,7 +1,7 @@
 import { pool } from "../../config/db.connect.js";
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
-import { getConsultReqWithIdQ, setHouseSizeQ, setMoodQ, setRoomNumberQ, setStatusQ, setConcernQ} from "./consult.sql.js";
+import { getConsultReqWithIdQ, setHouseSizeQ, setMoodQ, setRoomNumberQ, setStatusQ, setConcernQ, setImageQ, getRoomImageWithIdQ} from "./consult.sql.js";
 
 export const getConsultReq=async(id)=>{
     try{
@@ -75,6 +75,34 @@ export const setConcern=async(body)=>{
         conn.release();
         return body.consulting_id;
     }catch(err){
+        console.log(err);
+        throw new BaseError(status.INTERNAL_SERVER_ERROR);
+    }
+}
+
+export const setImage=async(body)=>{
+    try{
+        const conn=await pool.getConnection();
+        const [result]=await pool.query(setImageQ,[body.consulting_id,body.s3_key]);
+        conn.release();
+        return result.insertId; //room_image의 id
+    }catch(err){
+        console.log(err);
+        throw new BaseError(status.INTERNAL_SERVER_ERROR);
+    }
+}
+
+export const getRoomImage=async(id)=>{
+    try{
+        const conn=await pool.getConnection();
+        const [result]=await pool.query(getRoomImageWithIdQ,id);
+        if(result.length==0){
+            return -1;
+        }
+        conn.release();
+        return result;
+    }
+    catch(err){
         console.log(err);
         throw new BaseError(status.INTERNAL_SERVER_ERROR);
     }
