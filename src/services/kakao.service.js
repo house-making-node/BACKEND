@@ -1,3 +1,5 @@
+//kakao.service.js
+
 import axios from "axios";
 
 // 카카오 인증 URL 생성
@@ -15,7 +17,7 @@ export const getKakaoToken = async (code) => {
         params: {
           grant_type: "authorization_code",
           client_id: process.env.KAKAO_CLIENT_ID,
-          client_secret: process.env.KAKAO_CLIENT_SECRET,
+          //client_secret: process.env.KAKAO_CLIENT_SECRET,
           redirect_uri: process.env.KAKAO_REDIRECT_URI,
           code,
         },
@@ -24,5 +26,20 @@ export const getKakaoToken = async (code) => {
     return response.data.access_token;
   } catch (error) {
     throw new Error("Failed to retrieve access token");
+  }
+};
+
+// 액세스 토큰을 사용하여 카카오 사용자 정보 가져오기
+export const getKakaoUserInfo = async (accessToken) => {
+  try {
+    const response = await axios.get("https://kapi.kakao.com/v2/user/me", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("User info retrieval error:", error);
+    throw new Error("Failed to retrieve user information");
   }
 };
