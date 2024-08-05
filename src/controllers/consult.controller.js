@@ -1,7 +1,7 @@
 // consult.controller.js
 import { response } from "../../config/response.js";
 import { status } from "../../config/response.status.js";
-import { addHouseSize, addMood, addRoomNumber, addConcern, addStatus, addRoomImages } from "../services/consult.service.js";
+import { addHouseSize, addMood, addRoomNumber, addConcern, addStatus, addRoomImages, getConsultingStatus } from "../services/consult.service.js";
 
 export const houseSizeAdd = async (req, res, next) => {
     try {
@@ -53,6 +53,16 @@ export const statusUpdate=async(req,res,next)=>{
     }
 }
 
+export const consultingStatusGet=async(req,res,next)=>{
+    try{
+        console.log("params",req.params);
+        const result=await getConsultingStatus(req.params.consulting_id);
+        res.send(response(status.SUCCESS,result));
+    }catch(error){
+        next(error);
+    }
+}
+
 export const roomImageAdd=async(req,res,next)=>{
     try{
         console.log("body", req.body);
@@ -66,3 +76,4 @@ export const roomImageAdd=async(req,res,next)=>{
         next(error);
     }
 }
+

@@ -10,4 +10,3 @@ consultRouter.patch('/requirements/mood', expressAsyncHandler(moodAdd));
 consultRouter.patch('/requirements/concern', expressAsyncHandler(concernAdd));
 consultRouter.patch('/status', expressAsyncHandler(statusUpdate));
 consultRouter.post('/requirements/room_image', imageUploader.single('image'),expressAsyncHandler(roomImageAdd));
-
