@@ -4,9 +4,9 @@ import { status } from '../../config/response.status.js';
 import { uploadToS3 } from '../middleware/image.uploader.js';
 
 import { addInfo } from '../services/share_subscriptions.service.js';
-import { addLetter} from '../services/share_letters.service.js';
-
-import {processAndSaveLetter} from '../services/share_letters_api.service.js';
+import { addLetter } from '../services/share_letters.service.js';
+import { saveOpinion } from '../services/share_opinions.service.js';
+import { processAndSaveLetter } from '../services/share_letters_api.service.js';
 import { getPreview, getLetterDetails } from '../providers/share_letters.provider.js';
 
 export const addSubscriptionInfo = async (req,res,next) => {
@@ -45,7 +45,7 @@ export const addSharedLetter = async (req, res, next) => {
 
 export const lettersPreview = async (req, res, next) => {
     try{
-        console.log("공유레터가 조회됩니다.");
+        console.log("공유레터 리스트가 조회됩니다.");
         console.log("body: ", req.body);
 
         const {offset, limit} = req.query;
@@ -68,6 +68,23 @@ export const getLetterById = async (req, res, next) => {
 
         return res.send(response(status.SUCCESS, await getLetterDetails(letter_id)));
     } catch(error){
+        next(error);
+    }
+};
+
+
+export const submitOpinion = async (req,res,next) => {
+    try{
+    
+        const { letter_id } = req.params;
+        const opinionData = { ...req.body, letter_id};
+
+        console.log(`공유레터 ID: ${letter_id}에 대한 의견이 제출됩니다.`);
+        console.log("의견 데이터: ", opinionData);
+
+        return res.send(response(status.SUCCESS, await saveOpinion(opinionData)));
+    } catch (error) {
+        console.error("sshare_letters.controller.js error: ", error); 
         next(error);
     }
 };
