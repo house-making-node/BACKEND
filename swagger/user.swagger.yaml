@@ -1,0 +1,91 @@
+paths:
+  /user/profile/{user_id}:
+    get:
+      tags:
+        - mypage
+      summary: 회원정보 불러오기
+      description: user_id를 통해 회원 정보를 조회합니다.
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: ID of the user to retrieve
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 200
+                  isSuccess:
+                    type: boolean
+                    example: true
+                  code:
+                    type: integer
+                    example: 2000
+                  message:
+                    type: string
+                    example: success!
+                  data:
+                    type: object
+                    properties:
+                      user_id:
+                        type: integer
+                        example: 1
+                      access_token:
+                        type: string
+                        example: "abcde"
+                      user_name:
+                        type: string
+                        example: "Manager"
+                      email:
+                        type: string
+                        example: "manager@naver.com"
+                      created_at:
+                        type: string
+                        format: date-time
+                        example: "2024-07-25T06:43:48"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 404
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: string
+                    example: "COMMON005"
+                  message:
+                    type: string
+                    example: "요청한 페이지를 찾을 수 없습니다. 관리자에게 문의 바랍니다."
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: integer
+                    example: 500
+                  isSuccess:
+                    type: boolean
+                    example: false
+                  code:
+                    type: string
+                    example: "COMMON000"
+                  message:
+                    type: string
+                    example: "서버 에러, 관리자에게 문의 바랍니다."
