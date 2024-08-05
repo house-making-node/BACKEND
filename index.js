@@ -1,6 +1,6 @@
 import express from "express"; // ES6
 import dotenv from "dotenv";
-
+import bodyParser from "body-parser";
 import { specs } from "./config/swagger.config.js";
 import SwaggerUi from "swagger-ui-express";
 import { response } from "./config/response.js";
@@ -13,7 +13,8 @@ import cors from "cors";
 import { homelettersRouter } from "./src/routes/home_letters.route.js";
 import { sharelettersRouter } from "./src/routes/share_letters.route.js";
 import { consultRouter } from "./src/routes/consult.route.js";
-import { userRouter } from "./src/routes/user.router.js";
+import { faqRouter } from "./src/routes/faq.route.js";
+import { userRouter } from "./src/routes/user.route.js";
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.set("port", process.env.PORT); // 서버 포트 지정
 app.use(cors());
 app.use(express.static("public")); // 정적 파일 접근
 app.use(express.json()); // request의 본문을 json으로 해석할 수 있도록 함
+app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.get("/", function (req, res) {
@@ -36,10 +38,8 @@ app.use("/api-docs", SwaggerUi.serve, SwaggerUi.setup(specs));
 // router setting
 app.use("/share_letters", sharelettersRouter);
 app.use("/home_letters", homelettersRouter);
-
-//컨설팅
-app.use("/consulting", consultRouter);
-
+app.use("/consulting", consultRouter); //컨설팅
+app.use("/faq", faqRouter); //faq게시판
 app.use("/user", userRouter); //마이페이지
 
 // error handling
