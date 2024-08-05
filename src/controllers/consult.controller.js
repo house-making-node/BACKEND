@@ -33,20 +33,20 @@ export const moodAdd= async (req, res, next) => {
     }
 }
 
-export const statusAdd=async(req,res,next)=>{
+export const concernAdd= async(req,res,next)=>{
     try{
         console.log("body",req.body);
-        const result=await addStatus(req.body);
+        const result=await addConcern(req.body);
         res.send(response(status.SUCCESS,result));
     }catch(error){
         next(error);
     }
 }
 
-export const concernAdd= async(req,res,next)=>{
+export const statusUpdate=async(req,res,next)=>{
     try{
         console.log("body",req.body);
-        const result=await addConcern(req.body);
+        const result=await updateStatus(req.body);
         res.send(response(status.SUCCESS,result));
     }catch(error){
         next(error);
