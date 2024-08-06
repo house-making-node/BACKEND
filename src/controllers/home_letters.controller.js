@@ -10,7 +10,7 @@ import { addScrap, getScrapDetailsByUserId as getScrapDetailsService } from '../
 import { submitOpinion } from '../services/home_opinion.service.js';
 import { getLetterDetail } from '../services/home_letters.service.js';
 //이미지 업로드
-import { uploadToS3 } from '../middleware/image.uploader.js';
+// import { uploadToS3 } from '../middleware/image.uploader.js';
 
 //자취레터 스크랩 조회하기
 export const getScrapDetailsByUserId = async (req, res, next) => {

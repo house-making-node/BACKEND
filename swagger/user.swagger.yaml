@@ -89,7 +89,6 @@ paths:
                   message:
                     type: string
                     example: "서버 에러, 관리자에게 문의 바랍니다."
-paths:  
   /user/consulting/status/{consulting_id}:
     get:
       tags:
