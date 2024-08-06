@@ -24,7 +24,7 @@ export const getLetterById = async (letter_id) => {
 
 export const addHomeLetter = async ({ concern_id, title, s3_key, contents }) => {
     try {
-        console.log("getLetterById [letter_id]: ", letter_id);
+        console.log("addHomeLetter [concern_id, title, s3_key, contents]: ", concern_id, title, s3_key, contents);
         const conn = await pool.getConnection();
 
         const [result] = await conn.query(insertHomeLetterSql, [
