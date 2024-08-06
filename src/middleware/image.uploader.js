@@ -59,7 +59,11 @@ export const imageUploader = multer({
         return callback(new BaseError(status.DIRECTORY_NOT_FOUND));
       }
 
-      callback(null, `${uploadDirectory}/${uuid}_${file.originalname}`);
+      // 경로 설정 
+      const filePath = uploadDirectory ? `${uploadDirectory}/${uuid}_${file.originalname}` : `${uuid}_${file.originalname}`;
+      console.log("Upload Directory: ", uploadDirectory);
+      console.log("File Path: ", filePath);
+      callback(null, filePath);
     },
     // acl: 'public-read-write'  // 파일 액세스 권한
   }),
