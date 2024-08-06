@@ -36,7 +36,7 @@ app.get("/", function (req, res) {
 app.use("/api-docs", SwaggerUi.serve, SwaggerUi.setup(specs));
 
 // router setting
-app.use("/share_letters", sharelettersRouter);
+app.use("/share_letters", sharelettersRouter); //공유레터
 app.use("/home_letters", homelettersRouter);
 app.use("/consulting", consultRouter); //컨설팅
 app.use("/faq", faqRouter); //faq게시판
@@ -49,10 +49,12 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
+  console.log("Error Object:", err); // 에러 객체의 전체 구조를 출력
+
   const status = err.data?.status || 500;
   const message = err.data?.message || "Internal Server Error";
-  console.log(status);
-  console.log(message);
+  console.log("Error Status:", status);
+  console.log("Error Message:", message);
   // 템플릿 엔진 변수 설정
   res.locals.message = message;
   // 개발환경이면 에러를 출력하고 아니면 출력하지 않기
