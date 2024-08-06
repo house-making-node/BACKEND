@@ -1,7 +1,7 @@
 import { pool } from "../../config/db.connect.js";
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
-import { insertSharedLetterSql, getSharedLetterSql, insertSharedLetterContentSql, selectLettersPreviewSql, selectSharedLetterSql, insertScrapDataSql, getScrapDtaSql } from './share_letters.sql.js';
+import { insertSharedLetterSql, getSharedLetterSql, insertSharedLetterContentSql, selectLettersPreviewSql, selectSharedLetterSql, insertScrapDataSql, getScrapDtaSql, deleteScrapSql } from './share_letters.sql.js';
 
 export const addLetterData = async (body) =>{
     try{
@@ -67,6 +67,23 @@ export const getScrapData = async(id) => {
     }
 }
 
+export const deleteScrapData = async ({user_id, letter_id}) => {
+    try{
+        const conn = await pool.getConnection();
+        const [result] = await conn.query(deleteScrapSql,[user_id,letter_id]);
+        conn.release();
+
+        if(result.length === 0){
+            return -1;
+        }
+
+        console.log('share_letters.dao.js deleteScrapData result: ', result);
+        return result;
+    }catch(err){
+        console.log("share_letters.dao.js deleteScarpData [err] : ", err);
+        throw err;
+    }
+}
 
 export const getLetterData = async (id) => {
     try{

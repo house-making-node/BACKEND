@@ -38,3 +38,7 @@ export const getScrapDtaSql = `
     FROM SHARED_SCRAP
     WHERE scrap_id = ?
 `;
+
+export const deleteScrapSql = `
+    DELETE FROM SHARED_SCRAP WHERE user_id = ? AND letter_id = ?
+`;
