@@ -1,6 +1,8 @@
 paths:
   /faq/inquiry:
     get:
+      tags:
+        - faq
       summary: 질문 가져오기
       description: FAQ 게시판에 작성된 질문을 가져옵니다.
       responses:
@@ -41,6 +43,8 @@ paths:
 
   /faq/response:
     get:
+      tags:
+        - faq
       summary: 질문에 대한 답변 받기
       description: 질문 ID로 답변을 검색합니다.
       parameters:
