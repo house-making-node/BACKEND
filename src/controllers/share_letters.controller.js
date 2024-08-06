@@ -3,7 +3,7 @@ import { status } from '../../config/response.status.js';
 
 
 import { addInfo } from '../services/share_subscriptions.service.js';
-import { addLetter } from '../services/share_letters.service.js';
+import { addLetter, addScrap } from '../services/share_letters.service.js';
 import { saveOpinion } from '../services/share_opinions.service.js';
 import { processAndSaveLetter } from '../services/share_letters_api.service.js';
 import { getPreview, getLetterDetails } from '../providers/share_letters.provider.js';
@@ -81,7 +81,21 @@ export const submitOpinion = async (req,res,next) => {
 
         return res.send(response(status.SUCCESS, await saveOpinion(opinionData)));
     } catch (error) {
-        console.error("sshare_letters.controller.js error: ", error); 
+        console.error("share_letters.controller.js error: ", error); 
         next(error);
     }
 };
+
+
+export const addLetterToScrap = async (req,res,next) => {
+    try{
+        console.log("공유레터가 스크랩에 저장됩니다.");
+        console.log("body : ", req.body);
+
+        const scrap = await addScrap(req.body);
+        return res.send(response(status.SUCCESS,scrap));
+    } catch (error) {
+        console.log("share_letters.controller.js addLetterToScrap error : ", error);
+        next(error);
+    }
+}

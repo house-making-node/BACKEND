@@ -36,7 +36,7 @@ app.get("/", function (req, res) {
 app.use("/api-docs", SwaggerUi.serve, SwaggerUi.setup(specs));
 
 // router setting
-app.use("/share_letters", sharelettersRouter);
+app.use("/share_letters", sharelettersRouter); //공유레터
 app.use("/home_letters", homelettersRouter);
 app.use("/consulting", consultRouter); //컨설팅
 app.use("/faq", faqRouter); //faq게시판
