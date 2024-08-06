@@ -11,6 +11,15 @@ export const addLetterDataResponseDTO = (letterInfo) => {
     };
 }
 
+export const addScrapDataResponseDTO = (scrapInfo) => {
+    return{
+        'scrap_id' : scrapInfo[0].scrap_id,
+        'user_id' : scrapInfo[0].user_id,
+        'letter_id' : scrapInfo[0].letter_id,
+        'created_at' : formatDate(scrapInfo[0].created_at)
+    };
+}
+
 export const previewLettersResponseDTO = (data) => {
     const letters = [];
 
