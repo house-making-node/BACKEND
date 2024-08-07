@@ -1,7 +1,7 @@
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
 import { getUser } from '../models/user.dao.js';
-import { addScrapData, getScrapInfo, getLetterById, getScrapDetailsByUserIdDao } from '../models/home_scrapes.dao.js';
+import { addScrapData, getScrapInfo, getLetterById, getScrapDetailsByUserIdDao, deleteScrapData } from '../models/home_scrapes.dao.js';
 import { addScrapInfoResponseDTO } from '../dtos/home_scrapes.dto.js';
 
 export const getScrapDetailsByUserId = async (user_id) => {
@@ -38,4 +38,23 @@ export const addScrap = async (body) => {
         console.log("addScrap [getScrapInfo]: ", subInfo);
         return addScrapInfoResponseDTO(subInfo);
     }
+};
+
+export const removeScrap = async (user_id, letter_id) => {
+    const user = await getUser(user_id);
+    if (user == -1) {
+        throw new BaseError(status.BAD_REQUEST, 'User not found');
+    }
+
+    const letter = await getLetterById(letter_id);
+    if (letter == -1) {
+        throw new BaseError(status.BAD_REQUEST, 'Letter not found');
+    }
+
+    const isDeleted = await deleteScrapData(user_id, letter_id);
+    if (!isDeleted) {
+        throw new BaseError(status.BAD_REQUEST, 'Failed to delete scrap info');
+    }
+
+    return { user_id, letter_id };
 };

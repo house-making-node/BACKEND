@@ -1,7 +1,19 @@
 import { pool } from "../../config/db.connect.js";
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
-import { insertScrapInfoSql, getScrapInfoSql } from './home_scrapes.sql.js';
+import { insertScrapInfoSql, getScrapInfoSql, deleteScrapInfoSql } from './home_scrapes.sql.js';
+
+export const deleteScrapData = async (user_id, letter_id) => {
+    try {
+        const conn = await pool.getConnection();
+        const [result] = await conn.query(deleteScrapInfoSql, [user_id, letter_id]);
+        conn.release();
+        return result.affectedRows > 0; // 삭제된 행이 있으면 true, 없으면 false
+    } catch (err) {
+        console.log("deleteScrapData [err]: ", err);
+        throw new BaseError(status.INTERNAL_SERVER_ERROR);
+    }
+};
 
 export const getScrapDetailsByUserIdDao = async (user_id) => {
     try {

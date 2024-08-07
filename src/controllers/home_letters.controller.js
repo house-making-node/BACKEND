@@ -6,9 +6,41 @@ import { getRefinedContent } from '../services/gpt.service.js';
 import { addHomeLetter } from '../models/home_letters.dao.js';
 import { homeLetterResponseDTO } from '../dtos/home_letters.dto.js';
 import { addConcern } from '../services/home_concerns.service.js';
-import { addScrap, getScrapDetailsByUserId as getScrapDetailsService } from '../services/home_scrapes.service.js';
+import { addScrap, getScrapDetailsByUserId as getScrapDetailsService, removeScrap } from '../services/home_scrapes.service.js';
 import { submitOpinion } from '../services/home_opinion.service.js';
 import { getLetterDetail } from '../services/home_letters.service.js';
+
+// 자취레터 스크랩 취소하기
+export const cancelScrap = async (req, res, next) => {
+    try {
+        console.log("해당 자취레터에 대한 스크랩을 취소합니다.");
+        console.log("body: ", req.body);
+        const { user_id, letter_id } = req.body;
+
+        if (!user_id || !letter_id) {
+            return res.status(status.BAD_REQUEST.status).json({
+                error: 'Missing required fields: user_id, letter_id'
+            });
+        }
+
+        const result = await removeScrap(user_id, letter_id);
+        res.status(status.SUCCESS.status).json({
+            status: status.SUCCESS.status,
+            isSuccess: status.SUCCESS.isSuccess,
+            code: status.SUCCESS.code,
+            message: status.SUCCESS.message,
+            result
+        });
+    } catch (error) {
+        console.error("cancelScrap [error]: ", error);
+        res.status(status.INTERNAL_SERVER_ERROR.status).json({
+            status: status.INTERNAL_SERVER_ERROR.status,
+            isSuccess: status.INTERNAL_SERVER_ERROR.isSuccess,
+            code: status.INTERNAL_SERVER_ERROR.code,
+            message: status.INTERNAL_SERVER_ERROR.message
+        });
+    }
+};
 
 //자취레터 스크랩 조회하기
 export const getScrapDetailsByUserId = async (req, res, next) => {
@@ -207,3 +239,4 @@ export const addScrapInfo = async (req, res, next) => {
         next(error);
     }
 };
+
