@@ -9,14 +9,7 @@ export const addConsultReqResponseDTO = (data) => {
     };
 };
 
-export const getConsultStatusResponseDTO=(data)=>{
-    return {
-        "consulting_id":data[0].id,
-        "status":data[0].status
-    };
-};  
-
-export const roomImagesResponseDTO=(consult_data,image_data)=>{
+export const addImageResponseDTO=(consult_data,image_data)=>{
     return {
         consulting_id: image_data[0].consulting_id,
         image_id: image_data[0].id,
@@ -24,3 +17,10 @@ export const roomImagesResponseDTO=(consult_data,image_data)=>{
         status: consult_data[0].status
     };
 };
+
+export const getConsultStatusResponseDTO=(data)=>{
+    return {
+        "consulting_id":data[0].id,
+        "status":data[0].status
+    };
+};  

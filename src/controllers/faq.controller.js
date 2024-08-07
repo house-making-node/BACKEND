@@ -1,6 +1,6 @@
 // controllers/faq.controller.js
 
-import Faq from "../models/faq.model.js";
+import Faq from "../models/faq.dao.js";
 
 // 사용자의 질문 목록을 가져오는 기능
 // curl -X GET "http://localhost:3000/faq/inquiry"

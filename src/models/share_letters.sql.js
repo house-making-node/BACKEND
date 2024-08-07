@@ -27,3 +27,18 @@ export const selectSharedLetterSql = `
     FROM SHARED_LETTER
     WHERE letter_id = ?
 `;
+
+export const insertScrapDataSql = `
+    INSERT INTO SHARED_SCRAP (user_id, letter_id)
+    VALUES (?,?)
+`;
+
+export const getScrapDtaSql = `
+    SELECT scrap_id, user_id, letter_id, created_at
+    FROM SHARED_SCRAP
+    WHERE scrap_id = ?
+`;
+
+export const deleteScrapSql = `
+    DELETE FROM SHARED_SCRAP WHERE user_id = ? AND letter_id = ?
+`;

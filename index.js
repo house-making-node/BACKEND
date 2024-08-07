@@ -14,14 +14,14 @@ import { homelettersRouter } from "./src/routes/home_letters.route.js";
 import { sharelettersRouter } from "./src/routes/share_letters.route.js";
 import { consultRouter } from "./src/routes/consult.route.js";
 import { faqRouter } from "./src/routes/faq.route.js";
-import { userRouter } from './src/routes/user.route.js';
+import { userRouter } from "./src/routes/user.route.js";
 
 dotenv.config();
 
 const app = express();
 
 // server setting - veiw, static, body-parser etc..
-app.set("port", process.env.PORT || 3000); // 서버 포트 지정
+app.set("port", process.env.PORT); // 서버 포트 지정
 app.use(cors());
 app.use(express.static("public")); // 정적 파일 접근
 app.use(express.json()); // request의 본문을 json으로 해석할 수 있도록 함
@@ -36,11 +36,11 @@ app.get("/", function (req, res) {
 app.use("/api-docs", SwaggerUi.serve, SwaggerUi.setup(specs));
 
 // router setting
-app.use("/share_letters", sharelettersRouter);
+app.use("/share_letters", sharelettersRouter); //공유레터
 app.use("/home_letters", homelettersRouter);
 app.use("/consulting", consultRouter); //컨설팅
 app.use("/faq", faqRouter); //faq게시판
-app.use('/user', userRouter); //마이페이지
+app.use("/user", userRouter); //마이페이지
 
 // error handling
 app.use((req, res, next) => {
