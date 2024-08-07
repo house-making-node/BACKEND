@@ -1,0 +1,665 @@
+paths:
+  /consulting/requirements/house_size:
+    post:
+      tags:
+        - Consulting
+      summary: 집 평수 추가
+      parameters:
+      - name: addHouseSize
+        in: body
+        required: true
+        schema:
+          properties:
+            user_id:
+              type: bigint
+              description: 사용자 id
+              example: 1
+            house_size:
+              type: string
+              description: 집 평수
+              example: "5평~10평"
+
+      responses:
+        '200':
+          description: 집 평수 추가 성공!
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              data:
+                type: object
+                example: 
+                  "consulting_id": 1
+                  "house_size": "5평 ~ 10평"
+                  "room_num": null
+                  "mood": null
+                  "concern": null
+                  "status": "step1"
+                
+        '400':
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON001
+              message:
+                type: string
+                example: 잘못된 요청입니다
+
+        '500':
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON000
+              message:
+                type: string
+                example: 서버 에러, 관리자에게 문의 바랍니다.
+  /consulting/requirements/room_num:
+    patch:
+      tags:
+        - Consulting
+      summary: 방 개수 추가
+      parameters:
+      - name: addRoomNumber
+        in: body
+        required: true
+        schema:
+          properties:
+            consulting_id:
+              type: bigint
+              description: 컨설팅 id
+              example: 1
+            room_num:
+              type: string
+              description: 방 개수
+              example: "2개"
+
+      responses:
+        '200':
+          description: 방 개수 추가 성공!
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              data:
+                type: object
+                example: 
+                  "consulting_id": 23
+                  "house_size": "5평 ~ 10평"
+                  "room_num": "2개"
+                  "mood": null
+                  "concern": null
+                  "status": "step1"
+                
+        '400':
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON001
+              message:
+                type: string
+                example: 잘못된 요청입니다
+
+        '500':
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON000
+              message:
+                type: string
+                example: 서버 에러, 관리자에게 문의 바랍니다.
+  /consulting/requirements/mood:
+    patch:
+      tags:
+        - Consulting
+      summary: 분위기 추가
+      parameters:
+      - name: addMood
+        in: body
+        required: true
+        schema:
+          properties:
+            consulting_id:
+              type: bigint
+              description: 컨설팅 id
+              example: 1
+            mood:
+              type: string
+              description: 분위기
+              example: "깔끔한 화이트톤"
+
+      responses:
+        '200':
+          description: 분위기 추가 성공!
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              data:
+                type: object
+                example: 
+                  "consulting_id": 23
+                  "house_size": "5평 ~ 10평"
+                  "room_num": "2개"
+                  "mood": "깔끔한 화이트톤"
+                  "concern": null
+                  "status": "step1"
+                
+        '400':
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON001
+              message:
+                type: string
+                example: 잘못된 요청입니다
+
+        '500':
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON000
+              message:
+                type: string
+                example: 서버 에러, 관리자에게 문의 바랍니다.
+  /consulting/requirements/concern:
+    patch:
+      tags:
+        - Consulting
+      summary: 고민 내용 추가
+      parameters:
+      - name: addConcern
+        in: body
+        required: true
+        schema:
+          properties:
+            consulting_id:
+              type: bigint
+              description: 컨설팅 id
+              example: 1
+            concern:
+              type: string
+              description: 고민 내용
+              example: "침대를 어디에 배치해야할지 모르겠어요."
+      responses:
+        '200':
+          description: 고민 내용 추가 성공!
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              data:
+                type: object
+                example: 
+                  "consulting_id": 23
+                  "house_size": "5평 ~ 10평"
+                  "room_num": "2개"
+                  "mood": "깔끔한 화이트톤"
+                  "concern": "침대를 어디에 배치해야할지 모르겠어요."
+                  "status": "step1"
+                
+        '400':
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON001
+              message:
+                type: string
+                example: 잘못된 요청입니다
+
+        '500':
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON000
+              message:
+                type: string
+                example: 서버 에러, 관리자에게 문의 바랍니다.
+  /consulting/status:
+    patch:
+      tags:
+        - Consulting
+      summary: status 변경
+      parameters:
+      - name: updateStatus
+        in: body
+        required: true
+        schema:
+          properties:
+            consulting_id:
+              type: bigint
+              description: 컨설팅 id
+              example: 1
+            status:
+              type: string
+              description: 상태
+              example: "답변 대기중"
+      responses:
+        '200':
+          description: status 변경 성공!
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              data:
+                type: object
+                example: 
+                  "consulting_id": 23
+                  "house_size": "5평 ~ 10평"
+                  "room_num": "2개"
+                  "mood": "깔끔한 화이트톤"
+                  "concern": "침대를 어디에 배치해야할지 모르겠어요."
+                  "status": "답변 대기중"
+        '400':
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON001
+              message:
+                type: string
+                example: 잘못된 요청입니다
+
+        '500':
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON000
+              message:
+                type: string
+                example: 서버 에러, 관리자에게 문의 바랍니다.
+
+  /consulting/{consulting_id}:
+    get:
+      tags:
+        - Consulting
+      summary: 컨설팅 요구사항 조회
+      parameters:
+      - name: consulting_id
+        in: path
+        required: true
+        schema:
+          properties:
+            consulting_id:
+              type: bigint
+              description: 컨설팅 id
+              example: 1
+      responses:
+        '200':
+          description: status 변경 성공!
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              data:
+                type: object
+                example:
+                  "consulting_id": 23
+                  "house_size": "5평 ~ 10평"
+                  "room_num": "2개"
+                  "mood": "깔끔한 화이트톤"
+                  "concern": "침대를 어디에 배치해야할지 모르겠어요."
+                  "status": "답변 대기중"
+        '400':
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON001
+              message:
+                type: string
+                example: 잘못된 요청입니다
+
+        '500':
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON000
+              message:
+                type: string
+                example: 서버 에러, 관리자에게 문의 바랍니다.
+
+  /consulting/requirements/room_image:
+    post:
+      tags:
+        - Consulting
+      summary: 방 사진 추가
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: consulting_id
+          in: formData
+          required: true
+          type: bigint
+          description: 컨설팅 ID
+          example: 1
+        - name: directory
+          in: formData
+          required: true
+          type: string
+          description: S3 폴더 경로
+          example: "abcd"
+        - name: image
+          in: formData
+          type: file
+          description: 파일 업로드
+          required: true
+      
+      responses:
+        '200':
+          description: 방 이미지 추가 성공!
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              data:
+                type: object
+                example: 
+                  "room_image_id": 1
+                  "consulting_id": 1
+                  "s3_key": "abcd"
+                  "status": "step3"
+        '400':
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON001
+              message:
+                type: string
+                example: 잘못된 요청입니다
+
+        '500':
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON000
+              message:
+                type: string
+                example: 서버 에러, 관리자에게 문의 바랍니다.
+  /consulting/requirements/blueprint:
+    post:
+      tags:
+        - Consulting
+      summary: 집 도면 이미지 추가
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: consulting_id
+          in: formData
+          required: true
+          type: bigint
+          description: 컨설팅 ID
+          example: 1
+        - name: directory
+          in: formData
+          required: true
+          type: string
+          description: S3 폴더 경로
+          example: "abcd"
+        - name: image
+          in: formData
+          type: file
+          description: 파일 업로드
+          required: true
+      
+      responses:
+        '200':
+          description: 집 도면 이미지 추가 성공!
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              data:
+                type: object
+                example: 
+                  "blueprint_id": 1
+                  "consulting_id": 1
+                  "s3_key": "abcd"
+                  "status": "step3"
+        '400':
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON001
+              message:
+                type: string
+                example: 잘못된 요청입니다
+
+        '500':
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON000
+              message:
+                type: string
+                example: 서버 에러, 관리자에게 문의 바랍니다.
+
