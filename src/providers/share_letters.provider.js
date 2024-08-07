@@ -1,6 +1,8 @@
-import { getLettersPreview, getLetterDataById } from '../models/share_letters.dao.js';
-import { previewLettersResponseDTO, getLetterByIdResponseDTO } from '../dtos/share_letters.dto.js';
+import { getLettersPreview, getLetterDataById, getScrapedLettersPreview } from '../models/share_letters.dao.js';
+import { previewLettersResponseDTO, getLetterByIdResponseDTO, getScrapedLettersPreviewDTO } from '../dtos/share_letters.dto.js';
 import { status } from '../../config/response.status.js';
+import { BaseError } from '../../config/error.js';
+import { getUser } from '../models/user.dao.js';
 
 export const getPreview = async (offset, limit) => {
 
@@ -28,5 +30,24 @@ export const getLetterDetails = async (letterId) => {
     } catch (error) {
         console.error("Error fetching letter details: ", error);
         throw new BaseError(status.INTERNAL_SERVER_ERROR, error.message);
+    }
+};
+
+
+export const getScrapList = async (user_id) => {
+    try{
+
+        const user = await getUser(user_id);
+
+        if( user === -1) {
+            throw new BaseError(status.USER_NOT_FOUND,'User not found');
+        }
+
+        const scrapedLetters = await getScrapedLettersPreview(user_id);
+
+        return getScrapedLettersPreviewDTO(scrapedLetters);
+    } catch (error){
+        console.error("Error fetching scraped letters details : ", error);
+        throw new BaseError(status.INTERNAL_SERVER_ERROR,error.message);
     }
 };
