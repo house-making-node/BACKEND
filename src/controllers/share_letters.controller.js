@@ -6,7 +6,7 @@ import { addInfo } from '../services/share_subscriptions.service.js';
 import { addLetter, addScrap, deleteScrap } from '../services/share_letters.service.js';
 import { saveOpinion } from '../services/share_opinions.service.js';
 import { processAndSaveLetter } from '../services/share_letters_api.service.js';
-import { getPreview, getLetterDetails } from '../providers/share_letters.provider.js';
+import { getPreview, getLetterDetails, getScrapList } from '../providers/share_letters.provider.js';
 
 export const addSubscriptionInfo = async (req,res,next) => {
     try{
@@ -109,6 +109,21 @@ export const deleteLetterFromScrap = async (req,res,next) => {
         return res.send(response(status.SUCCESS,scrapX));
     } catch (err){
         console.log("share_letters.controller.js deleteLetterFromScrap error : ", err);
+        next(err);
+    }
+}
+
+
+export const getSharedLetterScrapList = async (req,res,next) => {
+    try{
+        console.log("마이페이지에 스크랩한 공유레터 리스트가 보여집니다.");
+        console.log("body : ", req.body);
+
+        const {user_id} = req.params;
+        const scrapList = await getScrapList(user_id);
+        return res.send(response(status.SUCCESS,scrapList));
+    } catch(err){
+        console.log("share_letters.controller.js getSharedLetterScrapList error : ", err);
         next(err);
     }
 }

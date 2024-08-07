@@ -29,11 +29,27 @@ export const previewLettersResponseDTO = (data) => {
             "share_id": data[i].share_id,
             "title" : data[i].title,
             "s3_key" : data[i].s3_key,
-            "create_at" : formatDate(data[i].created_at)
+            "created_at" : formatDate(data[i].created_at)
         })
     }
 
     return {"Letter": letters}
+}
+
+export const getScrapedLettersPreviewDTO = (scrapedLetters) => {
+    const scrapLetters = [];
+
+    for(let i = 0; i < scrapedLetters.length; i++) {
+        scrapLetters.push({
+            "scrap_id" : scrapedLetters[i].scrap_id,
+            "user_id" : scrapedLetters[i].user_id,
+            "letter_id" : scrapedLetters[i].letter_id,
+            "title" : scrapedLetters[i].title,
+            "s3_key" : scrapedLetters[i].s3_key
+        })
+    }
+
+    return {"Scrap Letters ": scrapLetters}
 }
 
 export const getLetterByIdResponseDTO = (letter) => {
@@ -43,7 +59,7 @@ export const getLetterByIdResponseDTO = (letter) => {
         'title' : letter[0].title,
         's3_key' : letter[0].s3_key,
         'content' : letter[0].content,
-        "create_at" : formatDate(letter[0].created_at)
+        "created_at" : formatDate(letter[0].created_at)
     };
 }
 
