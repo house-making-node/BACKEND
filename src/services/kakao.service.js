@@ -12,19 +12,25 @@ export const getKakaoToken = async (code) => {
   try {
     const response = await axios.post(
       "https://kauth.kakao.com/oauth/token",
-      null,
+      new URLSearchParams({
+        grant_type: "authorization_code",
+        client_id: process.env.KAKAO_CLIENT_ID,
+        // client_secret: process.env.KAKAO_CLIENT_SECRET, // 필요 시 주석 해제
+        redirect_uri: process.env.KAKAO_REDIRECT_URI,
+        code,
+      }).toString(),
       {
-        params: {
-          grant_type: "authorization_code",
-          client_id: process.env.KAKAO_CLIENT_ID,
-          //client_secret: process.env.KAKAO_CLIENT_SECRET,
-          redirect_uri: process.env.KAKAO_REDIRECT_URI,
-          code,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
         },
       }
     );
     return response.data.access_token;
   } catch (error) {
+    console.error(
+      "Failed to retrieve access token:",
+      error.response ? error.response.data : error.message
+    );
     throw new Error("Failed to retrieve access token");
   }
 };
@@ -37,9 +43,13 @@ export const getKakaoUserInfo = async (accessToken) => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+    console.log("User info:", response.data); // 콘솔에 사용자 정보를 출력합니다.
     return response.data;
   } catch (error) {
-    console.error("User info retrieval error:", error);
+    console.error(
+      "User info retrieval error:",
+      error.response ? error.response.data : error.message
+    );
     throw new Error("Failed to retrieve user information");
   }
 };
