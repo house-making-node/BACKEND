@@ -8,5 +8,5 @@ import { consultingStatusGet } from "../controllers/consult.controller.js";
 
 export const userRouter = express.Router();
 
-userRouter.get('/home_letters/scrap/:user_id', getScrapDetailsByUserId);
-userRouter.get('/consulting/status/:consulting_id',consultingStatusGet);
+userRouter.get('/home_letters/scrap/:user_id', asyncHandler(getScrapDetailsByUserId));
+userRouter.get('/consulting/status/:consulting_id', asyncHandler(consultingStatusGet));

@@ -9,8 +9,6 @@ import { addConcern } from '../services/home_concerns.service.js';
 import { addScrap, getScrapDetailsByUserId as getScrapDetailsService } from '../services/home_scrapes.service.js';
 import { submitOpinion } from '../services/home_opinion.service.js';
 import { getLetterDetail } from '../services/home_letters.service.js';
-//이미지 업로드
-// import { uploadToS3 } from '../middleware/image.uploader.js';
 
 //자취레터 스크랩 조회하기
 export const getScrapDetailsByUserId = async (req, res, next) => {
@@ -164,14 +162,15 @@ export const createHomeLetter = async (req, res) => {
             contents: refinedContent
         };
 
-        await addHomeLetter(newHomeLetter);
+        const letterId = await addHomeLetter(newHomeLetter); // Add the new home letter and get the inserted ID
 
-        res.status(201).json({ message: 'Home letter created successfully' });
+        res.status(201).json({ message: 'Home letter created successfully', letterId });
     } catch (error) {
         console.error('Error creating home letter:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
 };
+
 //고민 저장
 export const addHomeLetterConcern = async (req, res, next) => {
     try {
