@@ -587,7 +587,7 @@ paths:
         - name: consulting_id
           in: formData
           required: true
-          type: bigint
+          type: integer
           description: 컨설팅 ID
           example: 1
         - name: directory

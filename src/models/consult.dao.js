@@ -111,9 +111,9 @@ export const getRoomImage=async(id)=>{
 export const setBlueprint=async(body)=>{
     try{
         const conn=await pool.getConnection();
-        await pool.query(setBlueprintQ,[body.consulting_id,body.s3_key]);
+        const [result]=await pool.query(setBlueprintQ,[body.consulting_id,body.s3_key]);
         conn.release();
-        return body.insertId;
+        return result.insertId;
     }catch(err){
         console.log(err);
         throw new BaseError(status.INTERNAL_SERVER_ERROR);
