@@ -1,8 +1,7 @@
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
 import { getConsultReq, setHouseSize, setMood, setRoomNumber, setConcern, setStatus, setRoomImage, getRoomImage, setBlueprint, getBlueprint } from "../models/consult.dao.js";
-// import { addConsultReqResponseDTO, getConsultStatusResponseDTO, roomImagesResponseDTO } from "../dtos/consult.response.dto.js";
-
+import { addConsultReqResponseDTO, addImageResponseDTO } from "../dtos/consult.response.dto.js";
 import { getUser } from "../models/user.dao.js";
 
 export const addHouseSize=async (body)=>{
