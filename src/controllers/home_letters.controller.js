@@ -9,6 +9,36 @@ import { addConcern } from '../services/home_concerns.service.js';
 import { addScrap, getScrapDetailsByUserId as getScrapDetailsService, removeScrap } from '../services/home_scrapes.service.js';
 import { submitOpinion } from '../services/home_opinion.service.js';
 import { getLetterDetail } from '../services/home_letters.service.js';
+import { fetchHomeLetters } from '../services/home_letters.service.js';
+
+// 전체 자취레터 리스트 조회
+export const getHomeLettersList = async (req, res) => {
+    try {
+        console.log("전체 자취레터 리스트를 조회합니다.");
+        console.log("body: ", req.body);
+        console.log("params: ", req.params);
+        const { offset = 0, limit = 10 } = req.query;
+
+        const letters = await fetchHomeLetters(Number(offset), Number(limit));
+
+        res.status(status.SUCCESS.status).json({
+            isSuccess: true,
+            code: 2000,
+            message: 'success!',
+            result: {
+                Letter: letters
+            }
+        });
+    } catch (error) {
+        console.error("getHomeLettersList [error]: ", error);
+        res.status(status.INTERNAL_SERVER_ERROR.status).json({
+            status: status.INTERNAL_SERVER_ERROR.status,
+            isSuccess: status.INTERNAL_SERVER_ERROR.isSuccess,
+            code: status.INTERNAL_SERVER_ERROR.code,
+            message: status.INTERNAL_SERVER_ERROR.message
+        });
+    }
+};
 
 // 자취레터 스크랩 취소하기
 export const cancelScrap = async (req, res, next) => {
