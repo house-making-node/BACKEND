@@ -1,66 +1,57 @@
-# paths:
-#   /auth/kakao:
-#     get:
-#       tags:
-#         - login
-#       summary: 카카오 인가 코드로 사용자 정보 얻기
-#       description: 카카오 인가 코드를 입력하면 카카오 API를 통해 사용자 ID, 이메일, 닉네임을 가져옵니다.
-#       parameters:
-#         - name: code
-#           in: query
-#           description: 카카오에서 반환된 인가 코드
-#           required: true
-#           schema:
-#             type: string
-#       responses:
-#         "200":
-#           description: 성공적으로 사용자 정보를 반환합니다.
-#           content:
-#             application/json:
-#               schema:
-#                 type: object
-#                 properties:
-#                   user_id:
-#                     type: integer
-#                     description: 카카오 사용자 ID
-#                   email:
-#                     type: string
-#                     description: 사용자의 이메일
-#                   nickname:
-#                     type: string
-#                     description: 사용자의 닉네임
-#         "400":
-#           description: 잘못된 인가 코드
-#           content:
-#             application/json:
-#               schema:
-#                 type: object
-#                 properties:
-#                   error:
-#                     type: string
-#                     description: 에러 메시지
-#         "500":
-#           description: 서버 오류
-#           content:
-#             application/json:
-#               schema:
-#                 type: object
-#                 properties:
-#                   error:
-#                     type: string
-#                     description: 서버에서 발생한 에러 메시지
+openapi: 3.0.0
+info:
+  title: Kakao API
+  version: 1.0.0
+  description: API for retrieving user information from Kakao
 
-# components:
-#   schemas:
-#     UserInfo:
-#       type: object
-#       properties:
-#         user_id:
-#           type: integer
-#           description: 카카오 사용자 ID
-#         email:
-#           type: string
-#           description: 사용자의 이메일
-#         nickname:
-#           type: string
-#           description: 사용자의 닉네임
+paths:
+  /auth/kakao:
+    get:
+      tags:
+        - login
+      summary: 카카오 인가 코드로 사용자 정보 얻기
+      description: 카카오 인가 코드를 입력하면 카카오 API를 통해 사용자 ID, 이메일, 닉네임을 가져옵니다.
+      parameters:
+        - name: code
+          in: query
+          description: 카카오에서 반환된 인가 코드
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 성공적으로 사용자 정보를 반환합니다.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user_id:
+                    type: integer
+                    description: 카카오 사용자 ID
+                  email:
+                    type: string
+                    description: 사용자의 이메일
+                  nickname:
+                    type: string
+                    description: 사용자의 닉네임
+        "400":
+          description: 잘못된 인가 코드
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 에러 메시지
+        "500":
+          description: 서버 오류
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: 서버에서 발생한 에러 메시지
