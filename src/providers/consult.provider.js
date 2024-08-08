@@ -1,7 +1,7 @@
 import { get } from "http";
 import { status } from "../../config/response.status.js";
 import { addConsultReqResponseDTO, getConsultStatusResponseDTO, getImagesResponseDTO } from "../dtos/consult.response.dto.js";
-import { getConsultReq, getUserRoomImage } from "../models/consult.dao.js";
+import { getConsultReq, getUserBlueprint, getUserRoomImage } from "../models/consult.dao.js";
 
 export const getConsultRequest=async (consulting_id)=>{
     const getConsultData=await getConsultReq(consulting_id);
@@ -25,4 +25,12 @@ export const getRoomImages=async (consulting_id)=>{
         throw new BaseError(status.CONSULT_NOT_FOUND);
     }
     return getImagesResponseDTO(await getUserRoomImage(consulting_id));
+}
+
+export const getBlueprints=async (consulting_id)=>{
+    const getConsultData=await getConsultReq(consulting_id);
+    if(getConsultData==-1){
+        throw new BaseError(status.CONSULT_NOT_FOUND);
+    }
+    return getImagesResponseDTO(await getUserBlueprint(consulting_id));
 }

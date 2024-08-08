@@ -1,7 +1,7 @@
 // consult.controller.js
 import { response } from "../../config/response.js";
 import { status } from "../../config/response.status.js";
-import { getConsultingStatus, getConsultRequest, getRoomImages } from "../providers/consult.provider.js";
+import { getBlueprints, getConsultingStatus, getConsultRequest, getRoomImages } from "../providers/consult.provider.js";
 import { addHouseSize, addMood, addRoomNumber, addConcern, addRoomImages, addBlueprints } from "../services/consult.service.js";
 
 export const houseSizeAdd = async (req, res, next) => {
@@ -106,6 +106,16 @@ export const roomImageGet=async(req,res,next)=>{
     try{
         console.log("params",req.params);
         const result=await getRoomImages(req.params.consulting_id);
+        res.send(response(status.SUCCESS,result));
+    }catch(error){
+        next(error);
+    }
+}
+
+export const blueprintGet=async(req,res,next)=>{
+    try{
+        console.log("params",req.params);
+        const result=await getBlueprints(req.params.consulting_id);
         res.send(response(status.SUCCESS,result));
     }catch(error){
         next(error);
