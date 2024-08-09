@@ -10,3 +10,4 @@ export const setBlueprintQ="INSERT INTO BLUEPRINT(consulting_id,s3_key) VALUES(?
 export const getBlueprintWithIdQ="SELECT * FROM BLUEPRINT WHERE id=?";
 export const getRoomImageWithConsIdQ="SELECT * FROM ROOM_IMAGE WHERE consulting_id=?";
 export const getBlueprintWithConsIdQ="SELECT * FROM BLUEPRINT WHERE consulting_id=?";
+export const getUserConsultReqWithIdQ="SELECT * FROM CONSULTING WHERE user_id=?";
