@@ -2,7 +2,7 @@
 import { response } from "../../config/response.js";
 import { status } from "../../config/response.status.js";
 import { getBlueprints, getConsultingStatus, getConsultRequest, getRoomImages } from "../providers/consult.provider.js";
-import { addHouseSize, addMood, addRoomNumber, addConcern, addRoomImages, addBlueprints } from "../services/consult.service.js";
+import { addHouseSize, addMood, addRoomNumber, addConcern, addRoomImages, addBlueprints, updateStatus } from "../services/consult.service.js";
 
 export const houseSizeAdd = async (req, res, next) => {
     try {
