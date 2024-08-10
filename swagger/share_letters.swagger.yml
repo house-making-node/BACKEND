@@ -5,48 +5,50 @@ info:
 paths:
   /share_letters/subscribe:
     post:
+      tags:
+       - Share Letter
       summary: 사용자의 공유레터 구독정보 저장
-      requestBody:
+      parameters:
+      - name: addShareLetterSubInfo
+        in: body
         required: true
-        content: 
-          application/json:
-            schema:
-              type: object
-              properties:
-                user_id:
-                  type: bigint
-                  example: 1
-                email:
-                  type: string
-                  maxLength: 15
-                  example: "user@example.com"
-                name: 
-                  type: string
-                  maxLength: 10
-                  example: "user"
+        schema: 
+          properties:
+            user_id:
+              type: bigint
+              example: 1
+            email:
+              type: string
+              maxLength: 15
+              example: "user@example.com"
+            name: 
+              type: string
+              maxLength: 10
+              example: "user"
       responses:
         '200':
           description: 사용자 구독정보 저장 성공
-          content:
-            application/json:
-              schema:
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                exmaple: "success!"
+              data:
                 type: object
-                properties:
-                  status:
-                    type: string
-                    example: success
-                  data:
-                    type: object
-                    properties:
-                      user_id:
-                        type: bigint
-                        example: 1
-                      email:
-                        type: string
-                        example: "user@example.com"
-                      name:
-                        type: string
-                        example: "user"
+                exmaple:
+                  "user_id" : 1
+                  "email" : "user@example.com"
+                  "name": "user"
         '400' :
           description: 잘못된 요청
           schema:
@@ -83,37 +85,62 @@ paths:
                 example: 서버 에러, 관리자에게 문의 바랍니다.
   /share_letters/submit:
     post:
-     summary: 공유레터 제출하기
-     requestBody:
-      required: true
-      content:
-        multipart/form-data:
-          schema:
-            type: object
-            properties:
-              user_id: 
-                type: bigint
-                example: 1
-              nickname:
-                type: string
-                maxLength: 50
-                example: "user"
-              age :
-                type: integer
-                example: 20
-              experience_detail:
-                type: text
-                exmaple: "example"
-              experience_comment:
-                type: text
-                example: "example"
-              title:
-                type: string
-                maxLength: 100
-                example: "title"
-              image:
-                type: string
-                format: binary
+      tags:
+        - Share Letter
+      summary: 공유레터 제출하기
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: directory
+          in: formData
+          required: true
+          type: string
+          description: S3 폴더 경로
+          example: "share_letters"
+        - name: image
+          in: formData
+          type: file
+          description: 공유레터 썸네일 업로드
+          required: true
+        - name: user_id
+          in: formData  
+          required: true
+          type: integer
+          format: int64
+          description: 사용자 ID
+          example: 1
+        - name: nickname
+          in: formData
+          required: true
+          type: string
+          maxLength: 50
+          description: 사용자 닉네임
+          example: "user"
+        - name: age
+          in: formData
+          required: true
+          type: integer
+          description: 사용자 나이
+          example: 20
+        - name: experience_detail
+          in: formData
+          required: true
+          type: string
+          description: 공유레터 내용
+          exmaple: "example"
+        - name: experience_comment
+          in: formData
+          required: true
+          type: string
+          description: 집꾸에게 보내는 의견
+          example: "example"
+        - name: title
+          in: formData
+          required: true
+          type: string
+          maxLength: 100
+          description: 공유레터 제목
+          example: "title"
       responses:
         '200':
           description: 공유레터 제출 성공
@@ -125,35 +152,26 @@ paths:
                   status:
                     type: string
                     example: success
+                  isSuccess: 
+                    type: boolean
+                    example: true
+                  code: 
+                    type: integer
+                    example: 2000
+                  message: 
+                    type: string
+                    example: "success!"
                   data:
                     type: object
-                    properties:
-                      user_id:
-                        type: integer
-                        example: 1
-                      share_id:
-                        type: bigint
-                        example: 1
-                      title:
-                        type: string
-                        maxLength: 50
-                        example: "My Experience"
-                      nickname:
-                        type: string
-                        maxLength: 50
-                        example: "user"
-                      age:
-                        type: integer
-                        example: 25
-                      experience_detail:
-                        type: string
-                        example: "공유레터 내용"
-                      experience_comment:
-                        type: string
-                        example: "하고 싶은 말"
-                      s3_key:
-                        type: string
-                        example: "path/to/s3/image.jpg"
+                    example:
+                      "user_id" : 1
+                      "share_id" : 1
+                      "title" : "title"
+                      "nickname" : "nickname"
+                      "age" : 1
+                      "experience_detail" : "experience_detail"
+                      "experience_comment" : "experience_comment"
+                      "s3_key": "share_letters/122.jpg"
         '400' :
           description: 잘못된 요청
           schema:
@@ -188,4 +206,405 @@ paths:
               message:
                 type: string
                 example: 서버 에러, 관리자에게 문의 바랍니다.
-                      
+  /share_letters:
+    get:
+      tags:
+        - Share Letter
+      summary: 공유레터 목록 조회
+      description: 공유레터 목록을 가져옵니다.
+      parameters:
+      - name: offset
+        in: query
+        required: true
+        type: integer
+        description: 조회를 시작할 오프셋 (0부터 시작)
+        example: 0
+      - name: limit
+        in: query
+        required: true
+        type: integer
+        description: 한 번에 가져올 공유레터의 수
+        example: 2
+      responses:
+        '200':
+          description: 공유레터 목록 조회 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              data:
+                type: object
+                example:
+                  "letter_id" : 6
+                  "share_id": 16
+                  "title" : "title"
+                  "s3_key" : "share_letters/4bd1b421e1e15a508d8a11d83f5901be_home.jpg"
+                  "create_at" : "2024.7.31"
+        '400':
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON001
+              message:
+                type: string
+                example: "잘못된 요청입니다"
+        '500':
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              tatus:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON000
+              message:
+                type: string
+                example: "서버 에러, 관리자에게 문의 바랍니다."
+  /share_letters/{letter_id}:
+    get:
+      tags:
+        - Share Letter
+      summary: 특정 공유레터 상세조회
+      parameters:
+      - name: letter_id
+        in: path
+        required: true
+        schema:
+          properties:
+            letter_id:
+              type: bigint
+              description: 공유레터 ID
+              example: 1
+      responses:
+        '200':
+          description: 특정 공유레터 조회 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              data:
+                type: object
+                example:
+                  "letter_id" : 6
+                  "share_id": 16
+                  "title" : "title"
+                  "s3_key" : "share_letters/4bd1b421e1e15a508d8a11d83f5901be_home.jpg"
+                  "content" : "content"
+                  "create_at" : "2024.7.31"
+        '400':
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON001
+              message:
+                type: string
+                example: "잘못된 요청입니다"
+        '500':
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              tatus:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON000
+              message:
+                type: string
+                example: "서버 에러, 관리자에게 문의 바랍니다."
+  /share_letters/{letter_id}/opinions:
+    post:
+      tags:
+        - Share Letter
+      summary: 특정 공유레터에 대한 사용자의 의견 제출
+      parameters:
+        - name: letter_id
+          in: path
+          required: true
+          schema:
+            properties:
+              letter_id:
+                type: bigint
+                description: 공유레터 ID
+                example: 1
+        - name: Opinions
+          in: body
+          required: true
+          schema:
+            properties:
+              user_id:
+                type: bigint
+                example: 1
+              is_satisfy:
+                type: boolean
+                example: true
+              satisfy_detail_1:
+                type: boolean
+                example: true
+              satisfy_detail_2:
+                type: boolean
+                example: true
+              satisfy_detail_3:
+                type: boolean
+                example: true
+              unsatisfy_detail_1:
+                type: boolean
+                example: true
+              unsatisfy_detail_2:
+                type: boolean
+                example: true
+              unsatisfy_detail_3:
+                type: boolean
+                example: true
+              opinion_good:
+                type: text
+                example: "good"
+              opinion_bad:
+                type: text
+                example: "abcd"
+              comment:
+                type: text
+                example: "comment"
+      responses:
+        '200':
+          description: 특정 공유레터에 대한 사용자 의견 제출 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              data:
+                type: object
+                example:
+                  "opinion_id" : 6
+                  "user_id": 1
+                  "letter_id" : 1
+        '400':
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON001
+              message:
+                type: string
+                example: "잘못된 요청입니다"
+        '500':
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              tatus:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON000
+              message:
+                type: string
+                example: "서버 에러, 관리자에게 문의 바랍니다."
+  /share_letters/scrap:
+    post:
+      tags:
+        - Share Letter
+      summary: 공유레터 스크랩에 추가
+      parameters:
+      - name: addSharedLetterToScrap
+        in: body
+        required: true
+        schema:
+          properties: 
+            user_id:
+              type: bigint
+              example: 1
+            letter_id:
+              type: bigint
+              example: 1
+      responses:
+        '200':
+          description: 공유레터 스크랩에 추가 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              data:
+                type: object
+                example:
+                  "scrap_id" : 6
+                  "user_id": 1
+                  "letter_id" : 1
+                  "created_at" : "2024.7.31"
+        '400':
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON001
+              message:
+                type: string
+                example: "잘못된 요청입니다"
+        '500':
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              tatus:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON000
+              message:
+                type: string
+                example: "서버 에러, 관리자에게 문의 바랍니다."
+  /share_letters/scrapX:
+    delete:
+      tags:
+        - Share Letter
+      summary: 공유레터 스크랩에서 삭제
+      parameters:
+      - name: deleteScrap
+        in: body
+        required: true
+        schema:
+          properties:
+            user_id:
+              type: bigint
+              example: 1
+            letter_id:
+              type: bigint
+              example: 1
+      responses:
+        '200':
+          description: 공유레터 스크랩에서 삭제 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              data:
+                type: object
+                example:
+                  "user_id": 1
+                  "letter_id" : 1
+                  "message" : "delete success"
+        '400':
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON001
+              message:
+                type: string
+                example: "잘못된 요청입니다"
+        '500':
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              tatus:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON000
+              message:
+                type: string
+                example: "서버 에러, 관리자에게 문의 바랍니다."
