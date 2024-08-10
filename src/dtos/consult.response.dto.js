@@ -24,3 +24,22 @@ export const getConsultStatusResponseDTO=(data)=>{
         "status":data[0].status
     };
 };  
+
+export const getImagesResponseDTO = (data) => {
+    const S3_BASE_URL = 'https://jibkku-s3.s3.ap-northeast-2.amazonaws.com/';
+    return data.map(item => ({
+        ...item,
+        s3_Url: `${S3_BASE_URL}${item.s3_key}`
+    }));
+};
+
+export const getUserConsultReqResponseDTO=(data)=>{
+    return data.map(item=>({
+        consulting_id:item.id,
+        house_size:item.house_size,
+        room_num:item.room_num,
+        mood:item.mood,
+        concern:item.concern,
+        status:item.status
+    }));
+}

@@ -10,6 +10,7 @@ import { status } from "./config/response.status.js";
 // import yaml from 'js-yaml'; // YAML 파일을 파싱하기 위한 모듈 추가
 import cors from "cors";
 
+import { kakaoRouter } from "./src/routes/kakao.route.js";
 import { homelettersRouter } from "./src/routes/home_letters.route.js";
 import { sharelettersRouter } from "./src/routes/share_letters.route.js";
 import { consultRouter } from "./src/routes/consult.route.js";
@@ -36,6 +37,7 @@ app.get("/", function (req, res) {
 app.use("/api-docs", SwaggerUi.serve, SwaggerUi.setup(specs));
 
 // router setting
+app.use("/auth", kakaoRouter); //카카오 로그인
 app.use("/share_letters", sharelettersRouter); //공유레터
 app.use("/home_letters", homelettersRouter);
 app.use("/consulting", consultRouter); //컨설팅

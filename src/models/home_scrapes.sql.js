@@ -10,3 +10,8 @@ export const getScrapInfoSql = `
     FROM HOME_SCRAP
     WHERE scrap_id = ?
 `;
+
+export const deleteScrapInfoSql = `
+    DELETE FROM HOME_SCRAP
+    WHERE user_id = ? AND letter_id = ?
+`;

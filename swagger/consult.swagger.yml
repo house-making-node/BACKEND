@@ -429,7 +429,7 @@ paths:
               example: 1
       responses:
         '200':
-          description: status 변경 성공!
+          description: 컨설팅 요구사항 조회 성공!
           schema:
             type: object
             properties:
@@ -501,7 +501,7 @@ paths:
         - name: consulting_id
           in: formData
           required: true
-          type: bigint
+          type: integer
           description: 컨설팅 ID
           example: 1
         - name: directory
@@ -587,7 +587,7 @@ paths:
         - name: consulting_id
           in: formData
           required: true
-          type: bigint
+          type: integer
           description: 컨설팅 ID
           example: 1
         - name: directory
@@ -627,6 +627,157 @@ paths:
                   "consulting_id": 1
                   "s3_key": "abcd"
                   "status": "step3"
+        '400':
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON001
+              message:
+                type: string
+                example: 잘못된 요청입니다
+
+        '500':
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON000
+              message:
+                type: string
+                example: 서버 에러, 관리자에게 문의 바랍니다.
+  /consulting/room_image/{consulting_id}:
+    get:
+      tags:
+        - Consulting
+      summary: 컨설팅 자취방 사진 조회
+      parameters:
+      - name: consulting_id
+        in: path
+        required: true
+        schema:
+          properties:
+            consulting_id:
+              type: bigint
+              description: 컨설팅 id
+              example: 1
+      responses:
+        '200':
+          description: 자취방 사진 조회 성공!
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              data:
+                type: object
+                example:
+                  "id": 1
+                  "s3_key": "room_images/abcd"
+                  "consulting_id": 1
+                  "s3_Url": "https://s3/room_images/abcd"
+        '400':
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON001
+              message:
+                type: string
+                example: 잘못된 요청입니다
+
+        '500':
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON000
+              message:
+                type: string
+                example: 서버 에러, 관리자에게 문의 바랍니다.
+  /consulting/blueprint/{consulting_id}:
+    get:
+      tags:
+        - Consulting
+      summary: 컨설팅 도면 사진 조회
+      parameters:
+      - name: consulting_id
+        in: path
+        required: true
+        schema:
+          properties:
+            consulting_id:
+              type: bigint
+              description: 컨설팅 id
+              example: 1
+      responses:
+        '200':
+          description: 도면 사진 조회 성공!
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              data:
+                type: object
+                example:
+                  "id": 1
+                  "s3_key": "blueprints/abcd"
+                  "consulting_id": 1
+                  "s3_Url": "https://s3/blueprints/abcd"
+                 
         '400':
           description: 잘못된 요청
           schema:

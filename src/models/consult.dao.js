@@ -1,7 +1,7 @@
 import { pool } from "../../config/db.connect.js";
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
-import { getConsultReqWithIdQ, setHouseSizeQ, setMoodQ, setRoomNumberQ, setStatusQ, setConcernQ, setRoomImageQ, getRoomImageWithIdQ, setBlueprintQ} from "./consult.sql.js";
+import { getConsultReqWithIdQ, setHouseSizeQ, setMoodQ, setRoomNumberQ, setStatusQ, setConcernQ, setRoomImageQ, getRoomImageWithIdQ, setBlueprintQ, getBlueprintWithIdQ, getRoomImageWithConsIdQ, getBlueprintWithConsIdQ, getUserConsultReqWithIdQ} from "./consult.sql.js";
 
 export const getConsultReq=async(id)=>{
     try{
@@ -111,9 +111,9 @@ export const getRoomImage=async(id)=>{
 export const setBlueprint=async(body)=>{
     try{
         const conn=await pool.getConnection();
-        await pool.query(setBlueprintQ,[body.consulting_id,body.s3_key]);
+        const [result]=await pool.query(setBlueprintQ,[body.consulting_id,body.s3_key]);
         conn.release();
-        return body.insertId;
+        return result.insertId;
     }catch(err){
         console.log(err);
         throw new BaseError(status.INTERNAL_SERVER_ERROR);
@@ -136,3 +136,47 @@ export const getBlueprint=async(id)=>{
     }
 }
 
+export const getUserRoomImage=async(consulting_id)=>{
+    try{
+        const conn=await pool.getConnection();
+        const [result]=await pool.query(getRoomImageWithConsIdQ,consulting_id);
+        if(result.length==0){
+            return -1;
+        }
+        conn.release();
+        return result;
+    }catch(err){
+        console.log(err);
+        throw new BaseError(status.INTERNAL_SERVER_ERROR);
+    }
+}
+
+export const getUserBlueprint=async(consulting_id)=>{
+    try{
+        const conn=await pool.getConnection();
+        const [result]=await pool.query(getBlueprintWithConsIdQ,consulting_id);
+        if(result.length==0){
+            return -1;
+        }
+        conn.release();
+        return result;
+    }catch(err){
+        console.log(err);
+        throw new BaseError(status.INTERNAL_SERVER_ERROR);
+    }
+}
+
+export const getUserConsult=async(user_id)=>{
+    try{
+        const conn=await pool.getConnection();
+        const [result]=await pool.query(getUserConsultReqWithIdQ,user_id);
+        if(result.length==0){
+            return -1;
+        }
+        conn.release();
+        return result;
+    }catch(err){
+        console.log(err);
+        throw new BaseError(status.INTERNAL_SERVER_ERROR);
+    }
+}
