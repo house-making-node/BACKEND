@@ -131,7 +131,6 @@ paths:
                   "mood": "깔끔한 화이트톤"
                   "concern": "침대를 어디에 배치해야할지 모르겠어요."
                   "status": "step1"
-                
         '400':
           description: 잘못된 요청
           schema:
@@ -149,7 +148,6 @@ paths:
               message:
                 type: string
                 example: 잘못된 요청입니다
-
         '500':
           description: 서버 에러
           schema:
@@ -226,7 +224,6 @@ paths:
               message:
                 type: string
                 example: 잘못된 요청입니다
-
         '500':
           description: 서버 에러
           schema:
