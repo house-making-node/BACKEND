@@ -15,6 +15,11 @@ const insertUserSql = `
     VALUES (?, ?, ?, ?, NOW())
 `;
 
+const insertUserImageSql = `
+    INSERT INTO USER_IMAGE (id, s3_key, user_id)
+    VALUES (UUID(), ?, ?)
+`;
+
 // getUser 함수 정의
 export const getUser = async (user_id) => {
   try {
@@ -41,6 +46,18 @@ export const insertUser = async (user_id, access_token, user_name, email) => {
     conn.release();
   } catch (err) {
     console.log("user.dao.js [insertUser err] : ", err);
+    throw new BaseError(status.INTERNAL_SERVER_ERROR);
+  }
+};
+
+//insertUserImage
+export const insertUserImage = async (s3_key, user_id) => {
+  try {
+    const conn = await pool.getConnection();
+    await conn.query(insertUserImageSql, [s3_key, user_id]);
+    conn.release();
+  } catch (err) {
+    console.log("user.dao.js [insertUserImage err] : ", err);
     throw new BaseError(status.INTERNAL_SERVER_ERROR);
   }
 };
