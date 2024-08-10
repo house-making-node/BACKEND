@@ -429,7 +429,7 @@ paths:
               example: 1
       responses:
         '200':
-          description: status 변경 성공!
+          description: 컨설팅 요구사항 조회 성공!
           schema:
             type: object
             properties:
@@ -698,12 +698,10 @@ paths:
               data:
                 type: object
                 example:
-                  "consulting_id": 23
-                  "house_size": "5평 ~ 10평"
-                  "room_num": "2개"
-                  "mood": "깔끔한 화이트톤"
-                  "concern": "침대를 어디에 배치해야할지 모르겠어요."
-                  "status": "답변 대기중"
+                  "id": 1
+                  "s3_key": "room_images/abcd"
+                  "consulting_id": 1
+                  "s3_Url": "https://s3/room_images/abcd"
         '400':
           description: 잘못된 요청
           schema:
