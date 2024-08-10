@@ -14,3 +14,4 @@ consultRouter.post('/requirements/room_image', imageUploader.single('image'),exp
 consultRouter.post('/requirements/blueprint',imageUploader.single('image'),expressAsyncHandler(blueprintAdd));
 consultRouter.get('/room_image/:consulting_id',expressAsyncHandler(roomImageGet));
 consultRouter.get('/blueprint/:consulting_id',expressAsyncHandler(blueprintGet));
+

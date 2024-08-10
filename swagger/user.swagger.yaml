@@ -167,28 +167,24 @@ paths:
               message:
                 type: string
                 example: 서버 에러, 관리자에게 문의 바랍니다.
-  /consulting/status:
-    patch:
+  /user/consulting/{user_id}:
+    get:
       tags:
-        - Consulting
-      summary: status 변경
+        - User
+      summary: 유저의 컨설팅 목록 조회
       parameters:
-      - name: updateStatus
-        in: body
+      - name: user_id
+        in: path
         required: true
         schema:
           properties:
             consulting_id:
               type: bigint
-              description: 컨설팅 id
+              description: 유저의 id
               example: 1
-            status:
-              type: string
-              description: 상태
-              example: "답변 대기중"
       responses:
         '200':
-          description: status 변경 성공!
+          description: 유저의 컨설팅 목록 조회 성공!
           schema:
             type: object
             properties:
@@ -207,12 +203,13 @@ paths:
               data:
                 type: object
                 example: 
-                  "consulting_id": 23
+                  "consulting_id": 1
                   "house_size": "5평 ~ 10평"
                   "room_num": "2개"
                   "mood": "깔끔한 화이트톤"
                   "concern": "침대를 어디에 배치해야할지 모르겠어요."
-                  "status": "답변 대기중"
+                  "status": "step1"
+                
         '400':
           description: 잘못된 요청
           schema:
@@ -248,4 +245,4 @@ paths:
               message:
                 type: string
                 example: 서버 에러, 관리자에게 문의 바랍니다.
-
+  
