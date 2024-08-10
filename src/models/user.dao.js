@@ -16,8 +16,14 @@ const insertUserSql = `
 `;
 
 const insertUserImageSql = `
-    INSERT INTO USER_IMAGE (id, s3_key, user_id)
-    VALUES (UUID(), ?, ?)
+    INSERT INTO USER_IMAGE (s3_key, user_id)
+    VALUES (?, ?)
+`;
+
+const getUserImageKeySql = `
+    SELECT s3_key
+    FROM USER_IMAGE
+    WHERE user_id = ?
 `;
 
 // getUser 함수 정의
@@ -59,5 +65,25 @@ export const insertUserImage = async (s3_key, user_id) => {
   } catch (err) {
     console.log("user.dao.js [insertUserImage err] : ", err);
     throw new BaseError(status.INTERNAL_SERVER_ERROR);
+  }
+};
+
+// getUserImageKey 함수 정의
+export const getUserImageKey = async (user_id) => {
+  try {
+    const conn = await pool.getConnection();
+    const [result] = await conn.query(getUserImageKeySql, [user_id]);
+    conn.release();
+
+    if (result.length === 0) {
+      console.log(`No S3 key found for user_id: ${user_id}`);
+      return null;
+    }
+
+    console.log(`S3 key for user_id ${user_id}: ${result[0].s3_key}`);
+    return result[0].s3_key;
+  } catch (err) {
+    console.error("Error in getUserImageKey:", err.message);
+    throw new Error("Failed to get S3 key");
   }
 };
