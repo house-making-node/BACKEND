@@ -6,7 +6,7 @@ import { userProfile } from "../controllers/user.controller.js";
 import { userImage } from "../controllers/userImage.controller.js";
 import { getScrapDetailsByUserId } from "../controllers/home_letters.controller.js";
 import { get } from "http";
-import { consultingStatusGet } from "../controllers/consult.controller.js";
+import { consultingStatusGet, userConsultingGet } from "../controllers/consult.controller.js";
 import { getSharedLetterScrapList } from "../controllers/share_letters.controller.js";
 
 export const userRouter = express.Router();
@@ -25,3 +25,6 @@ userRouter.get(
   "/:user_id/share_letters/scraps",
   asyncHandler(getSharedLetterScrapList)
 ); // 마이페이지 공유레터 스크랩 리스트 조회
+
+
+userRouter.get("/consulting/:user_id",asyncHandler(userConsultingGet)); 

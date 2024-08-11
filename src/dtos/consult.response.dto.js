@@ -32,3 +32,14 @@ export const getImagesResponseDTO = (data) => {
         s3_Url: `${S3_BASE_URL}${item.s3_key}`
     }));
 };
+
+export const getUserConsultReqResponseDTO=(data)=>{
+    return data.map(item=>({
+        consulting_id:item.id,
+        house_size:item.house_size,
+        room_num:item.room_num,
+        mood:item.mood,
+        concern:item.concern,
+        status:item.status
+    }));
+}

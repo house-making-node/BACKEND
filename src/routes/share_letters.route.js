@@ -13,4 +13,4 @@ sharelettersRouter.post('/:letter_id/opinions', asyncHandler(submitOpinion)); //
 sharelettersRouter.post('/subscribe',asyncHandler(addSubscriptionInfo)); // 공유레터 구독정보 저장하기
 sharelettersRouter.post('/submit', imageUploader.single('image'), asyncHandler(addSharedLetter)); // 공유레터 제출하기
 sharelettersRouter.post('/scrap',asyncHandler(addLetterToScrap)); // 특정 공유레터 스크랩에 저장하기
-sharelettersRouter.delete('/scrap',asyncHandler(deleteLetterFromScrap)); // 특정 공유레터 스크랩에서 제외하기
+sharelettersRouter.delete('/scrapX',asyncHandler(deleteLetterFromScrap)); // 특정 공유레터 스크랩에서 제외하기

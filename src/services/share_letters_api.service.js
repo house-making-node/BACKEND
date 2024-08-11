@@ -14,7 +14,7 @@ export const processAndSaveLetter = async (shareId, nickname, experienceDetail, 
             model: "gpt-3.5-turbo", // 사용할 모델 지정 
             messages: [{
                 role: "user",
-                content: `Here is a story shared by ${nickname}.\n\n${experienceDetail}\n\nPlease summarize this content and provide a suitable title.`
+                content: `Here is a story shared by ${nickname}.\n\n${experienceDetail}\n\nPlease summarize this content in Korean and provide a suitable title in Korean as well.`
             }],
             max_tokens: 1500 // 최대 토큰 수 설정
         });
