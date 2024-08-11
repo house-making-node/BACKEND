@@ -1,0 +1,664 @@
+swagger: '2.0'
+info:
+  title: 자취레터 API
+  description: 자취레터 생성, 고민제출, 상세정보조회, 의견제출, 구독정보 저장, 스크랩 추가/취소/조회 등을 관리하는 API
+  version: 1.0.0
+
+paths:
+  /home_letters:
+    get:
+      tags:
+        - home letter
+      summary: 전체 자취레터 리스트 조회
+      parameters:
+        - name: offset
+          in: query
+          type: integer
+          required: false
+          description: 조회를 시작할 위치 (기본값: 0)
+          example: 0
+        - name: limit
+          in: query
+          type: integer
+          required: false
+          description: 한번에 조회할 자취레터 수 (기본값: 2)
+          example: 2
+      responses:
+        '200':
+          description: 자취레터 리스트 조회 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: success!
+              result:
+                type: object
+                properties:
+                  Letter:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        letter_id:
+                          type: integer
+                          example: 1
+                        title:
+                          type: string
+                          example: "자취 레터 제목"
+                        s3_key:
+                          type: string
+                          example: "home_letters/s3_key_example.jpg"
+                        created_at:
+                          type: string
+                          example: "2024-07-31"
+        '500':
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: string
+                example: COMMON000
+              message:
+                type: string
+                example: 서버 에러, 관리자에게 문의 바랍니다.
+
+  /home_letters/{letter_id}:
+    get:
+      tags:
+        - home letter
+      summary: 특정 자취레터 상세조회
+      parameters:
+        - name: letter_id
+          in: path
+          type: integer
+          required: true
+          description: 조회할 자취레터의 ID
+          example: 1
+      responses:
+        '200':
+          description: 자취레터 상세 조회 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: success!
+              result:
+                type: object
+                properties:
+                  letter_id:
+                    type: integer
+                    example: 1
+                  title:
+                    type: string
+                    example: "자취 레터 제목"
+                  s3_key:
+                    type: string
+                    example: "home_letters/s3_key_example.jpg"
+                  created_at:
+                    type: string
+                    example: "2024-07-31"
+                  contents:
+                    type: string
+                    example: "자취 레터의 내용입니다."
+        '404':
+          description: 자취레터를 찾을 수 없음
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 404
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: string
+                example: COMMON004
+              message:
+                type: string
+                example: 해당 자취레터를 찾을 수 없습니다.
+        '500':
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: string
+                example: COMMON000
+              message:
+                type: string
+                example: 서버 에러, 관리자에게 문의 바랍니다.
+
+  /home_letters/scrap:
+    post:
+      tags:
+        - home letter
+      summary: 자취레터 스크랩 추가
+      parameters:
+        - name: addScrapInfo
+          in: body
+          required: true
+          schema:
+            properties:
+              user_id:
+                type: integer
+                example: 1
+              letter_id:
+                type: integer
+                example: 6
+      responses:
+        '200':
+          description: 스크랩 추가 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: success!
+              result:
+                type: object
+                example:
+                  scrap_id: 1
+        '400':
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: string
+                example: COMMON001
+              message:
+                type: string
+                example: 잘못된 요청입니다
+        '500':
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: string
+                example: COMMON000
+              message:
+                type: string
+                example: 서버 에러, 관리자에게 문의 바랍니다.
+
+/home_letters/scrap:
+    delete:
+      tags:
+        - home letter
+      summary: 자취레터 스크랩 취소
+      parameters:
+        - name: cancelScrap
+          in: body
+          required: true
+          schema:
+            properties:
+              user_id:
+                type: integer
+                example: 1
+              letter_id:
+                type: integer
+                example: 1
+      responses:
+        '200':
+          description: 스크랩 취소 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: success!
+        '400':
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: string
+                example: COMMON001
+              message:
+                type: string
+                example: 잘못된 요청입니다
+        '500':
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: string
+                example: COMMON000
+              message:
+                type: string
+                example: 서버 에러, 관리자에게 문의 바랍니다.
+
+  /user/home_letters/scrap/{user_id}:
+    get:
+      tags:
+        - home letter
+      summary: 사용자가 스크랩한 자취레터 조회
+      parameters:
+        - name: user_id
+          in: path
+          type: integer
+          required: true
+          description: 스크랩한 자취레터를 조회할 사용자의 ID
+          example: 1
+      responses:
+        '200':
+          description: 스크랩한 자취레터 조회 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: success!
+              result:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    letter_id:
+                      type: integer
+                      example: 1
+                    title:
+                      type: string
+                      example: "스크랩한 자취레터 제목"
+                    s3_key:
+                      type: string
+                      example: "home_letters/s3_key_example.jpg"
+                    created_at:
+                      type: string
+                      example: "2024-07-31"
+        '404':
+          description: 스크랩한 자취레터를 찾을 수 없음
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 404
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: string
+                example: COMMON004
+              message:
+                type: string
+                example: 해당 스크랩한 자취레터를 찾을 수 없습니다.
+        '500':
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: string
+                example: COMMON000
+              message:
+                type: string
+                example: 서버 에러, 관리자에게 문의 바랍니다.
+
+  /home_letters/subscribe:
+    post:
+      tags:
+        - home letter
+      summary: 사용자의 자취레터 구독정보 저장
+      parameters:
+        - name: addSubscriptionInfo
+          in: body
+          required: true
+          schema:
+            properties:
+              user_id:
+                type: integer
+                example: 1
+              email:
+                type: string
+                maxLength: 15
+                example: "ooo@ooo.com"
+              name:
+                type: string
+                maxLength: 10
+                example: "사용자"
+      responses:
+        '200':
+          description: 사용자 구독정보 저장 성공
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: success!
+              data:
+                type: object
+                example:
+                  user_id: 1
+                  email: "ooo@ooo.com"
+                  name: "사용자"
+        '400':
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: string
+                example: COMMON001
+              message:
+                type: string
+                example: 잘못된 요청입니다
+        '500':
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: string
+                example: COMMON000
+              message:
+                type: string
+                example: 서버 에러, 관리자에게 문의 바랍니다.
+
+  /home_letters/{letter_id}/opinions:
+    post:
+      tags:
+        - home letter
+      summary: 특정 자취레터에 대한 사용자의 의견 제출
+      parameters:
+        - name: letter_id
+          in: path
+          required: true
+          schema:
+            properties:
+              letter_id:
+                type: bigint
+                description: 자취레터 ID
+                example: 1
+        - name: Opinions
+          in: body
+          required: true
+          schema:
+            properties:
+              user_id:
+                type: bigint
+                example: 1
+              is_satisfy:
+                type: boolean
+                example: true
+              satisfy_detail_1:
+                type: boolean
+                example: true
+              satisfy_detail_2:
+                type: boolean
+                example: true
+              satisfy_detail_3:
+                type: boolean
+                example: true
+              unsatisfy_detail_1:
+                type: boolean
+                example: true
+              unsatisfy_detail_2:
+                type: boolean
+                example: true
+              unsatisfy_detail_3:
+                type: boolean
+                example: true
+              opinion_good:
+                type: text
+                example: "good"
+              opinion_bad:
+                type: text
+                example: "abcd"
+              comment:
+                type: text
+                example: "comment"
+      responses:
+        '200':
+          description: 특정 자취레터에 대한 사용자 의견 제출 성공
+          schema:
+            type: object
+            properties:
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: "success!"
+              data:
+                type: object
+                example:
+                  "opinion_id" : 1
+                  "user_id": 1
+                  "letter_id" : 6
+        '400':
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON001
+              message:
+                type: string
+                example: "잘못된 요청입니다"
+        '500':
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              tatus:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON000
+              message:
+                type: string
+                example: "서버 에러, 관리자에게 문의 바랍니다."
+
+  /home_letters/create:
+    post:
+      tags:
+        - home letter
+      summary: 자취레터 생성
+      parameters:
+        - name: createHomeLetter
+          in: body
+          required: true
+          schema:
+            properties:
+              concern_id:
+                type: integer
+                example: 1
+              s3_key:
+                type: string
+                example: "home_letters/s3_key_example.jpg"
+      responses:
+        '201':
+          description: 자취레터 생성 성공
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Home letter created successfully
+              letterId:
+                type: integer
+                example: 1
+        '404':
+          description: 고민을 찾을 수 없음
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Concern not found
+        '500':
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Internal server error
+
+  /home_letters/submit:
+    post:
+      tags:
+        - home letter
+      summary: 고민 저장
+      parameters:
+        - name: addHomeLetterConcern
+          in: body
+          required: true
+          schema:
+            properties:
+              concern_detail:
+                type: string
+                example: "자취 고민 내용"
+      responses:
+        '200':
+          description: 고민 저장 성공
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 2000
+              message:
+                type: string
+                example: success!
+              data:
+                type: object
+                example:
+                  concern_id: 1
+        '500':
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: string
+                example: COMMON000
+              message:
+                type: string
+                example: 서버 에러, 관리자에게 문의 바랍니다.
