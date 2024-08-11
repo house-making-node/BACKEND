@@ -1,4 +1,5 @@
 swagger: '2.0'
+
 info:
   title: 자취레터 API
   description: 자취레터 생성, 고민제출, 상세정보조회, 의견제출, 구독정보 저장, 스크랩 추가/취소/조회 등을 관리하는 API
@@ -15,13 +16,13 @@ paths:
           in: query
           type: integer
           required: false
-          description: 조회를 시작할 위치 (기본값: 0)
+          description: "조회를 시작할 위치 (기본값: 0)"
           example: 0
         - name: limit
           in: query
           type: integer
           required: false
-          description: 한번에 조회할 자취레터 수 (기본값: 2)
+          description: "한번에 조회할 자취레터 수 (기본값: 2)"
           example: 2
       responses:
         '200':
@@ -37,7 +38,7 @@ paths:
                 example: 2000
               message:
                 type: string
-                example: success!
+                example: "success!"
               result:
                 type: object
                 properties:
@@ -74,7 +75,7 @@ paths:
                 example: COMMON000
               message:
                 type: string
-                example: 서버 에러, 관리자에게 문의 바랍니다.
+                example: "서버 에러, 관리자에게 문의 바랍니다."
 
   /home_letters/{letter_id}:
     get:
@@ -102,7 +103,7 @@ paths:
                 example: 2000
               message:
                 type: string
-                example: success!
+                example: "success!"
               result:
                 type: object
                 properties:
@@ -137,7 +138,7 @@ paths:
                 example: COMMON004
               message:
                 type: string
-                example: 해당 자취레터를 찾을 수 없습니다.
+                example: "해당 자취레터를 찾을 수 없습니다."
         '500':
           description: 서버 에러
           schema:
@@ -154,7 +155,7 @@ paths:
                 example: COMMON000
               message:
                 type: string
-                example: 서버 에러, 관리자에게 문의 바랍니다.
+                example: "서버 에러, 관리자에게 문의 바랍니다."
 
   /home_letters/scrap:
     post:
@@ -166,6 +167,7 @@ paths:
           in: body
           required: true
           schema:
+            type: object
             properties:
               user_id:
                 type: integer
@@ -187,7 +189,7 @@ paths:
                 example: 2000
               message:
                 type: string
-                example: success!
+                example: "success!"
               result:
                 type: object
                 example:
@@ -208,7 +210,7 @@ paths:
                 example: COMMON001
               message:
                 type: string
-                example: 잘못된 요청입니다
+                example: "잘못된 요청입니다"
         '500':
           description: 서버 에러
           schema:
@@ -225,9 +227,9 @@ paths:
                 example: COMMON000
               message:
                 type: string
-                example: 서버 에러, 관리자에게 문의 바랍니다.
+                example: "서버 에러, 관리자에게 문의 바랍니다."
 
-/home_letters/scrap:
+  /home_letters/scrapX:
     delete:
       tags:
         - home letter
@@ -237,6 +239,7 @@ paths:
           in: body
           required: true
           schema:
+            type: object
             properties:
               user_id:
                 type: integer
@@ -258,7 +261,7 @@ paths:
                 example: 2000
               message:
                 type: string
-                example: success!
+                example: "success!"
         '400':
           description: 잘못된 요청
           schema:
@@ -275,7 +278,7 @@ paths:
                 example: COMMON001
               message:
                 type: string
-                example: 잘못된 요청입니다
+                example: "잘못된 요청입니다"
         '500':
           description: 서버 에러
           schema:
@@ -292,7 +295,7 @@ paths:
                 example: COMMON000
               message:
                 type: string
-                example: 서버 에러, 관리자에게 문의 바랍니다.
+                example: "서버 에러, 관리자에게 문의 바랍니다."
 
   /user/home_letters/scrap/{user_id}:
     get:
@@ -320,7 +323,7 @@ paths:
                 example: 2000
               message:
                 type: string
-                example: success!
+                example: "success!"
               result:
                 type: array
                 items:
@@ -354,7 +357,7 @@ paths:
                 example: COMMON004
               message:
                 type: string
-                example: 해당 스크랩한 자취레터를 찾을 수 없습니다.
+                example: "해당 스크랩한 자취레터를 찾을 수 없습니다."
         '500':
           description: 서버 에러
           schema:
@@ -371,7 +374,7 @@ paths:
                 example: COMMON000
               message:
                 type: string
-                example: 서버 에러, 관리자에게 문의 바랍니다.
+                example: "서버 에러, 관리자에게 문의 바랍니다."
 
   /home_letters/subscribe:
     post:
