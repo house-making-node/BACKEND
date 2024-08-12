@@ -22,13 +22,18 @@ export const addScrapDataResponseDTO = (scrapInfo) => {
 
 export const previewLettersResponseDTO = (data) => {
     const letters = [];
+    const url = "https://jibkku-s3.s3.ap-northeast-2.amazonaws.com";
+    
 
     for(let i = 0; i < data.length; i++) {
+        const s3Key = data[i].s3_key;
+        const s3_url = `${url}/${s3Key}`;
         letters.push({
             "letter_id": data[i].letter_id,
             "share_id": data[i].share_id,
             "title" : data[i].title,
             "s3_key" : data[i].s3_key,
+            "s3_url" : s3_url,
             "created_at" : formatDate(data[i].created_at)
         })
     }
@@ -38,6 +43,9 @@ export const previewLettersResponseDTO = (data) => {
 
 export const getScrapedLettersPreviewDTO = (scrapedLetters) => {
     const scrapLetters = [];
+    const url = "https://jibkku-s3.s3.ap-northeast-2.amazonaws.com";
+    const s3Key = scrapedLetters[0].s3_key;
+    const s3_url = `${url}/${s3Key}`;
 
     for(let i = 0; i < scrapedLetters.length; i++) {
         scrapLetters.push({
@@ -45,7 +53,8 @@ export const getScrapedLettersPreviewDTO = (scrapedLetters) => {
             "user_id" : scrapedLetters[i].user_id,
             "letter_id" : scrapedLetters[i].letter_id,
             "title" : scrapedLetters[i].title,
-            "s3_key" : scrapedLetters[i].s3_key
+            "s3_key" : scrapedLetters[i].s3_key,
+            "s3_url" : s3_url
         })
     }
 
@@ -53,11 +62,17 @@ export const getScrapedLettersPreviewDTO = (scrapedLetters) => {
 }
 
 export const getLetterByIdResponseDTO = (letter) => {
+
+    const url = "https://jibkku-s3.s3.ap-northeast-2.amazonaws.com";
+    const s3Key = letter[0].s3_key;
+    const s3_url = `${url}/${s3Key}`;
+
     return {
         'letter_id': letter[0].letter_id,
         'share_id': letter[0].share_id,
         'title' : letter[0].title,
         's3_key' : letter[0].s3_key,
+        's3_url' : s3_url,
         'content' : letter[0].content,
         "created_at" : formatDate(letter[0].created_at)
     };
