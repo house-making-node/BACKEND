@@ -17,4 +17,6 @@ export const status = {
     USER_NOT_FOUND: {status: StatusCodes.BAD_REQUEST, "isSuccess": false, "code": "MEMBER4001", "message": "사용자가 없습니다."},
     CONSULT_NOT_FOUND: {status: StatusCodes.BAD_REQUEST, "isSuccess": false, "code": "CONSULT4001", "message": "컨설팅 정보가 없습니다."},
     DIRECTORY_NOT_FOUND: {status: StatusCodes.BAD_REQUEST, "isSuccess": false, "code": "IMAGE4001", "message": "s3 디렉토리가 존재하지 않습니다." },
+    IMAGE_NOT_FOUND: {status: StatusCodes.BAD_REQUEST, "isSuccess": false, "code": "IMAGE4002", "message": "이미지가 존재하지 않습니다." },
+    RESPONSE_NOT_FOUND: {status: StatusCodes.BAD_REQUEST, "isSuccess": false, "code": "RESPONSE4001", "message": "지피티 응답이 존재하지 않습니다." },
 }

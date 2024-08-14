@@ -1,14 +1,22 @@
-// services/s3.service.js
-import AWS from "aws-sdk";
+import {
+  S3Client,
+  PutObjectCommand,
+  GetObjectCommand,
+} from "@aws-sdk/client-s3";
+import { getSignedUrl as generatePresignedUrl } from "@aws-sdk/s3-request-presigner";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 
-const s3 = new AWS.S3({
-  accessKeyId: process.env.AWS_S3_ACCESS_KEY,
-  secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY,
+// S3 클라이언트 초기화
+const s3Client = new S3Client({
   region: process.env.AWS_S3_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_S3_ACCESS_KEY,
+    secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY,
+  },
 });
 
+// 이미지 S3에 업로드하는 함수
 export const uploadImageToS3 = async (imageUrl, user_id) => {
   try {
     console.log(`Downloading image from URL: ${imageUrl}`);
@@ -18,15 +26,15 @@ export const uploadImageToS3 = async (imageUrl, user_id) => {
     const imageBuffer = Buffer.from(imageResponse.data, "binary");
     const s3Key = `profile-images/${user_id}/${uuidv4()}.jpg`;
 
-    const params = {
+    const command = new PutObjectCommand({
       Bucket: process.env.AWS_S3_BUCKET_NAME,
       Key: s3Key,
       Body: imageBuffer,
       ContentType: imageResponse.headers["content-type"],
-    };
+    });
 
     console.log(`Uploading image to S3 with key: ${s3Key}`);
-    await s3.upload(params).promise();
+    await s3Client.send(command);
 
     return s3Key;
   } catch (error) {
@@ -35,16 +43,18 @@ export const uploadImageToS3 = async (imageUrl, user_id) => {
   }
 };
 
-export const getSignedUrl = async (s3Key) => {
+// 서명된 URL을 생성하는 함수
+export const generateSignedUrl = async (s3Key) => {
   try {
     console.log(`Generating signed URL for S3 key: ${s3Key}`);
-    const params = {
+    const command = new GetObjectCommand({
       Bucket: process.env.AWS_S3_BUCKET_NAME,
       Key: s3Key,
-      Expires: 60 * 60,
-    };
+    });
 
-    const url = await s3.getSignedUrlPromise("getObject", params);
+    const url = await generatePresignedUrl(s3Client, command, {
+      expiresIn: 3600,
+    });
     console.log(`Generated signed URL: ${url}`);
     return url;
   } catch (error) {
