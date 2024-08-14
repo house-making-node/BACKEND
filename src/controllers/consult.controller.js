@@ -1,7 +1,8 @@
 // consult.controller.js
+import e from "express";
 import { response } from "../../config/response.js";
 import { status } from "../../config/response.status.js";
-import {getBlueprints, getConsultingStatus, getConsultRequest, getRoomImages, getUserConsulting } from "../providers/consult.provider.js";
+import {getBlueprints, getConsultingStatus, getConsultRequest, getGptRequest, getRoomImages, getUserConsulting } from "../providers/consult.provider.js";
 import { addGptRequest } from "../services/consult.gpt.service.js";
 import { addHouseSize, addMood, addRoomNumber, addConcern, addRoomImages, addBlueprints, updateStatus } from "../services/consult.service.js";
 
@@ -137,6 +138,16 @@ export const gptRequestAdd=async(req,res,next)=>{
     try{
         console.log("body",req.body);
         const result=await addGptRequest(req.body);
+        res.send(response(status.SUCCESS,result));
+    }catch(error){
+        next(error);
+    }
+}
+
+export const gptRequestGet=async(req,res,next)=>{
+    try{
+        console.log("params",req.params);
+        const result=await getGptRequest(req.params.consulting_id);
         res.send(response(status.SUCCESS,result));
     }catch(error){
         next(error);

@@ -1,7 +1,7 @@
 import { pool } from "../../config/db.connect.js";
 import { BaseError } from "../../config/error.js";
 import { status } from "../../config/response.status.js";
-import { getConsultReqWithIdQ, setHouseSizeQ, setMoodQ, setRoomNumberQ, setStatusQ, setConcernQ, setRoomImageQ, getRoomImageWithIdQ, setBlueprintQ, getBlueprintWithIdQ, getRoomImageWithConsIdQ, getBlueprintWithConsIdQ, getUserConsultReqWithIdQ, setGptResponseQ, getGptResponseWithIdQ} from "./consult.sql.js";
+import { getConsultReqWithIdQ, setHouseSizeQ, setMoodQ, setRoomNumberQ, setStatusQ, setConcernQ, setRoomImageQ, getRoomImageWithIdQ, setBlueprintQ, getBlueprintWithIdQ, getRoomImageWithConsIdQ, getBlueprintWithConsIdQ, getUserConsultReqWithIdQ, setGptResponseQ, getGptResponseWithIdQ, getGptResponseWithConsIdQ} from "./consult.sql.js";
 
 export const getConsultReq=async(id)=>{
     try{
@@ -197,6 +197,21 @@ export const getGptResponse=async(id)=>{
     try{
         const conn=await pool.getConnection();
         const [result]=await pool.query(getGptResponseWithIdQ,id);
+        if(result.length == 0){
+            return -1;
+        }
+        conn.release();
+        return result;
+    }catch(err){
+        console.log(err);
+        throw new BaseError(status.INTERNAL_SERVER_ERROR);
+    }
+}
+
+export const getConGptResponse=async(consulting_id)=>{
+    try{
+        const conn=await pool.getConnection();
+        const [result]=await pool.query(getGptResponseWithConsIdQ,consulting_id);
         if(result.length == 0){
             return -1;
         }
