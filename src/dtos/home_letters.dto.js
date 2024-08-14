@@ -1,10 +1,20 @@
 export const homeLetterResponseDTO = (homeLetter) => {
-    return {
-        'letter_id': homeLetter[0].letter_id,
-        'concern_id': homeLetter[0].concern_id,
-        'title': homeLetter[0].title,
-        's3_key': homeLetter[0].s3_key,
-        'contents': homeLetter[0].contents,
-        'created_at': homeLetter[0].created_at
-    };
-};
+    const letters = [];
+    const url = "https://jibkku-s3.s3.ap-northeast-2.amazonaws.com";
+    
+
+    for(let i = 0; i < data.length; i++) {
+        const s3Key = data[i].s3_key;
+        const s3_url = `${url}/${s3Key}`;
+        letters.push({
+            "letter_id": data[i].letter_id,
+            "concern_id": data[i].concern_id,
+            "title" : data[i].title,
+            "s3_key" : data[i].s3_key,
+            "s3_url" : s3_url,
+            "created_at" : formatDate(data[i].created_at)
+        })
+    }
+
+    return {"Letter": letters}
+}
