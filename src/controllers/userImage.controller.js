@@ -1,6 +1,6 @@
 // controllers/userImage.controller.js
 import { getUserImageKey } from "../models/user.dao.js";
-import { getSignedUrl } from "../services/s3.service.js";
+import { generateSignedUrl } from "../services/s3.service.js";
 import { status } from "../../config/response.status.js";
 
 export const userImage = async (req, res, next) => {
