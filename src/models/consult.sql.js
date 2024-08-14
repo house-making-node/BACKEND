@@ -13,3 +13,4 @@ export const getBlueprintWithConsIdQ="SELECT * FROM BLUEPRINT WHERE consulting_i
 export const getUserConsultReqWithIdQ="SELECT * FROM CONSULTING WHERE user_id=?";
 export const setGptResponseQ="INSERT INTO CONSULTING_RESPONSE(consulting_id, content) VALUES(?,?)";
 export const getGptResponseWithIdQ="SELECT * FROM CONSULTING_RESPONSE WHERE id=?";
+export const getGptResponseWithConsIdQ="SELECT * FROM CONSULTING_RESPONSE WHERE consulting_id=?";

@@ -44,16 +44,15 @@ export const getUserConsultReqResponseDTO=(data)=>{
     }));
 }
 
-export const addGptResponseDTO=(gptData, consultData)=>{
+export const addGptResponseDTO=(data)=>{
     return {
-        consulting_id: consultData[0].id,
-        house_size: consultData[0].house_size,
-        room_num: consultData[0].room_num,
-        mood: consultData[0].mood,
-        concern: consultData[0].concern,
-        status: consultData[0].status,
-        response_id: gptData[0].id,
-        gpt_response: gptData[0].content
-
+        consulting_id: data[0].id,
+        house_size: data[0].house_size,
+        room_num: data[0].room_num,
+        mood: data[0].mood,
+        concern: data[0].concern,
+        status: data[0].status,
+        response_id: data[0].id,
+        gpt_response: data[0].content
     };
 }
