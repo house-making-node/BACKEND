@@ -16,6 +16,7 @@ import { sharelettersRouter } from "./src/routes/share_letters.route.js";
 import { consultRouter } from "./src/routes/consult.route.js";
 import { faqRouter } from "./src/routes/faq.route.js";
 import { userRouter } from "./src/routes/user.route.js";
+import { healthRouter } from "./src/routes/health.route.js";
 
 dotenv.config();
 
@@ -29,14 +30,20 @@ app.use(express.json()); // request의 본문을 json으로 해석할 수 있도
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.get("/", function (req, res) {
-  res.send("Hello World");
+app.get("/", (req, res, next) => {
+  res.send(response(status.SUCCESS, "루트 페이지!"));
+});
+
+app.use((req, res, next) => {
+  const err = new BaseError(status.NOT_FOUND);
+  next(err);
 });
 
 // swagger
 app.use("/api-docs", SwaggerUi.serve, SwaggerUi.setup(specs));
 
 // router setting
+app.use("/health", healthRouter); //health check
 app.use("/auth", kakaoRouter); //카카오 로그인
 app.use("/share_letters", sharelettersRouter); //공유레터
 app.use("/home_letters", homelettersRouter);
