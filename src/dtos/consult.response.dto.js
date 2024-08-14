@@ -43,3 +43,17 @@ export const getUserConsultReqResponseDTO=(data)=>{
         status:item.status
     }));
 }
+
+export const addGptResponseDTO=(gptData, consultData)=>{
+    return {
+        consulting_id: consultData[0].id,
+        house_size: consultData[0].house_size,
+        room_num: consultData[0].room_num,
+        mood: consultData[0].mood,
+        concern: consultData[0].concern,
+        status: consultData[0].status,
+        response_id: gptData[0].id,
+        gpt_response: gptData[0].content
+
+    };
+}

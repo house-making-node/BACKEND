@@ -1,6 +1,6 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
-import { houseSizeAdd, moodAdd, roomNumberAdd, concernAdd, statusUpdate, roomImageAdd, consultRequestGet, blueprintAdd, roomImageGet, blueprintGet } from '../controllers/consult.controller.js';
+import { houseSizeAdd, moodAdd, roomNumberAdd, concernAdd, statusUpdate, roomImageAdd, consultRequestGet, blueprintAdd, roomImageGet, blueprintGet, gptRequestAdd } from '../controllers/consult.controller.js';
 import { imageUploader } from '../middleware/image.uploader.js';
 
 export const consultRouter = express.Router();
@@ -14,4 +14,5 @@ consultRouter.post('/requirements/room_image', imageUploader.single('image'),exp
 consultRouter.post('/requirements/blueprint',imageUploader.single('image'),expressAsyncHandler(blueprintAdd));
 consultRouter.get('/room_image/:consulting_id',expressAsyncHandler(roomImageGet));
 consultRouter.get('/blueprint/:consulting_id',expressAsyncHandler(blueprintGet));
+consultRouter.post('/gpt_request',expressAsyncHandler(gptRequestAdd));
 
