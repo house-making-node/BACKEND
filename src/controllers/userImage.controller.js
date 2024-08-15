@@ -18,7 +18,7 @@ export const userImage = async (req, res, next) => {
     }
 
     console.log(`Fetching signed URL for S3 key: ${s3Key}`);
-    const signedUrl = await getSignedUrl(s3Key);
+    const signedUrl = await generateSignedUrl(s3Key);
 
     return res.status(status.SUCCESS.status).json({
       ...status.SUCCESS,
