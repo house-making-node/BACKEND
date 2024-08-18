@@ -33,7 +33,7 @@ export const addSharedLetter = async (req, res, next) => {
         res.send(response(status.SUCCESS, letter)); // 사용자에게 즉시 성공 응답 반환
 
         // 비동기 작업으로 편집 작업 후 SHARED_LETTER 테이블에 최종 저장
-        processAndSaveLetter(letter.share_id, req.body.nickname, req.body.experience_detail, req.file.key);
+        processAndSaveLetter(letter.share_id, req.body.title, req.body.experience_detail, req.file.key);
     } catch (error) {
         next(error);
     }
