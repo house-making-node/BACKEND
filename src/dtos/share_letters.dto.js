@@ -1,3 +1,15 @@
+export const formatDate = (date) => {
+    const dateObj = new Date(date);
+
+     // 년, 월, 일을 추출
+     const year = dateObj.getUTCFullYear();
+     const month = dateObj.getUTCMonth() + 1; // 월은 0부터 시작하므로 +1
+     const day = dateObj.getUTCDate();
+
+     // "YYYY년 M월 D일" 형식으로 반환
+     return `${year}년 ${month}월 ${day}일`;
+}
+
 export const addLetterDataResponseDTO = (letterInfo) => {
     return {
         'user_id': letterInfo[0].user_id,
@@ -44,16 +56,19 @@ export const previewLettersResponseDTO = (data) => {
 export const getScrapedLettersPreviewDTO = (scrapedLetters) => {
     const scrapLetters = [];
     const url = "https://jibkku-s3.s3.ap-northeast-2.amazonaws.com";
-    const s3Key = scrapedLetters[0].s3_key;
-    const s3_url = `${url}/${s3Key}`;
+    
 
     for(let i = 0; i < scrapedLetters.length; i++) {
+
+        const s3Key = scrapedLetters[i].s3_key;
+        const s3_url = `${url}/${s3Key}`;
+
         scrapLetters.push({
             "scrap_id" : scrapedLetters[i].scrap_id,
             "user_id" : scrapedLetters[i].user_id,
             "letter_id" : scrapedLetters[i].letter_id,
             "title" : scrapedLetters[i].title,
-            "s3_key" : scrapedLetters[i].s3_key,
+            "s3_key" : s3Key,
             "s3_url" : s3_url
         })
     }
@@ -78,14 +93,4 @@ export const getLetterByIdResponseDTO = (letter) => {
     };
 }
 
-const formatDate = (date) => {
-    const dateObj = new Date(date);
 
-     // 년, 월, 일을 추출
-     const year = dateObj.getUTCFullYear();
-     const month = dateObj.getUTCMonth() + 1; // 월은 0부터 시작하므로 +1
-     const day = dateObj.getUTCDate();
-
-     // "YYYY년 M월 D일" 형식으로 반환
-     return `${year}년 ${month}월 ${day}일`;
-}
