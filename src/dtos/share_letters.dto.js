@@ -79,5 +79,13 @@ export const getLetterByIdResponseDTO = (letter) => {
 }
 
 const formatDate = (date) => {
-    return new Intl.DateTimeFormat('kr').format(new Date(date)).replaceAll(" ", "").slice(0, -1);
+    const dateObj = new Date(date);
+
+     // 년, 월, 일을 추출
+     const year = dateObj.getUTCFullYear();
+     const month = dateObj.getUTCMonth() + 1; // 월은 0부터 시작하므로 +1
+     const day = dateObj.getUTCDate();
+
+     // "YYYY년 M월 D일" 형식으로 반환
+     return `${year}년 ${month}월 ${day}일`;
 }
