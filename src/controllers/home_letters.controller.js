@@ -198,7 +198,8 @@ export const addSubscriptionInfo = async (req, res, next) => {
         next(error);
     }
 };
-//자취레터 생성
+
+// 자취레터 생성
 export const createHomeLetter = async (req, res) => {
     try {
         console.log("자취레터가 저장됩니다.");
@@ -213,7 +214,7 @@ export const createHomeLetter = async (req, res) => {
 
         const { title, concern_detail } = concern;
 
-        // Use GPT to refine the content
+        // Use GPT to refine the content, passing title and concern_detail separately
         const refinedContent = await getRefinedContent(title, concern_detail);
 
         // Create a new home letter
