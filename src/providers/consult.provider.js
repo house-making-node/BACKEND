@@ -2,6 +2,7 @@ import { get } from "http";
 import { status } from "../../config/response.status.js";
 import { addConsultReqResponseDTO, addGptResponseDTO, getConsultStatusResponseDTO, getImagesResponseDTO, getUserConsultReqResponseDTO } from "../dtos/consult.response.dto.js";
 import { getConGptResponse, getConsultReq, getUserBlueprint, getUserConsult, getUserRoomImage } from "../models/consult.dao.js";
+import { getUser } from "../models/user.dao.js";
 
 export const getConsultRequest=async (consulting_id)=>{
     const getConsultData=await getConsultReq(consulting_id);
@@ -36,9 +37,9 @@ export const getBlueprints=async (consulting_id)=>{
 }
 
 export const getUserConsulting=async (user_id)=>{
-    const getConsultData=await getConsultReq(user_id);
-    if(getConsultData==-1){
-        throw new BaseError(status.CONSULT_NOT_FOUND);
+    const getUserData=await getUser(user_id);
+    if(getUserData==-1){
+        throw new BaseError(status.USER_NOT_FOUND);
     }
     return getUserConsultReqResponseDTO(await getUserConsult(user_id));
 }
