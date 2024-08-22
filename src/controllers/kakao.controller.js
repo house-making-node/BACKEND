@@ -43,8 +43,7 @@ export const kakaoLogin = async (req, res) => {
     res.cookie("access_token", accessToken, { httpOnly: true, secure: true });
 
     // 클라이언트 애플리케이션으로 리디렉션
-    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:3000";
-    return res.redirect(`${frontendUrl}/welcome`);
+    return res.redirect("https://housemaking-fe.vercel.app/welcome");
   } catch (error) {
     console.error("Failed to authenticate:", error);
     res.status(500).json({ error: "Failed to authenticate" });
